@@ -15,11 +15,12 @@ import javax.swing.table.DefaultTableModel;
  * 
  */
 public class model {
-    public DefaultTableModel mhs,mk;
+    public DefaultTableModel mhs,mk,nilaiMhs;
     
     public model(){
         this.mhs = modelMhs();
         this.mk = modelMk();
+        this.nilaiMhs = modelNilaiMhs();
     }
     
     private DefaultTableModel modelMhs(){
@@ -58,6 +59,31 @@ public class model {
         {
           boolean[] canEdit = new boolean[]{
             false,false
+          };
+          
+          public boolean tableCellEdit(int rowIndex, int colIndex){
+              return canEdit[colIndex];
+          }
+          
+        };
+    }
+    
+    private DefaultTableModel modelNilaiMhs(){
+        return new DefaultTableModel(
+                new Object[][] {},
+                new String[] {
+                    "Nama","Nama M.K.",
+                    "Absen","Tgs1","Tgs2","Tgs3",
+                    "UTS","UAS","Nilai Absen",
+                    "Nilai Tugas","Nilai UTS","Nilai UAS",
+                    "Nilai Absen", "Index","Keterangan"
+                }
+                
+        )
+        {
+          boolean[] canEdit = new boolean[]{
+            false,false,false,false,false,false,false
+                  ,false,false,false,false,false,false,false
           };
           
           public boolean tableCellEdit(int rowIndex, int colIndex){
