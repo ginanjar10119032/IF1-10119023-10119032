@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 05, 2021 at 12:41 PM
+-- Generation Time: Aug 05, 2021 at 01:48 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -61,7 +61,8 @@ CREATE TABLE `nilai_mhs` (
   `tugas3` int(3) DEFAULT NULL,
   `uts` int(3) DEFAULT NULL,
   `uas` int(3) DEFAULT NULL,
-  `nilai_akhir` int(3) DEFAULT NULL
+  `nilai_akhir` int(3) DEFAULT NULL,
+  `keterangan` enum('Lulus','Tidak Lulus') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -86,6 +87,17 @@ ALTER TABLE `mata_kuliah`
 ALTER TABLE `nilai_mhs`
   ADD KEY `nim` (`nim`),
   ADD KEY `nomor_mk` (`nomor_mk`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `nilai_mhs`
+--
+ALTER TABLE `nilai_mhs`
+  ADD CONSTRAINT `nilai_mhs_ibfk_1` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `nilai_mhs_ibfk_2` FOREIGN KEY (`nomor_mk`) REFERENCES `mata_kuliah` (`nomor_mk`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
