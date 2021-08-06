@@ -34,8 +34,7 @@ public class frm_mhs extends javax.swing.JFrame {
         initComponents();
         
         tabelMhs.setModel(tabelModel);
-        setColWidth();
-        tabelModel.addRow(new Object[]{"10119023","Muhammad Farhan R","Bandung","18-Jul-2001","Jl. Roung Binangkit No. 12"});
+        setColWidth();;
     }
 
     /**
