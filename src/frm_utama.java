@@ -57,6 +57,7 @@ public class frm_utama extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar1.setRollover(true);
+        jToolBar1.setFloatable(false);
 
         jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\GitHub\\IF1-10119023-10119032\\Gambar\\mahasiswa.png")); // NOI18N
         jButton1.setText("Data Mahasiswa");
