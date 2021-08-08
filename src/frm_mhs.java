@@ -45,8 +45,11 @@ public class frm_mhs extends javax.swing.JFrame {
         setColWidth();
         setIsiTabel();
         
+        nonaktif_text();
+        
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
+        btnSimpan.setEnabled(false);
     }
 
     public void setColWidth(){
@@ -92,6 +95,8 @@ public class frm_mhs extends javax.swing.JFrame {
     }
     
     public void tampil_field(){
+        aktif_text();
+        
         row = tabelMhs.getSelectedRow();
         
         String date = tabelMhs.getValueAt(row, 3).toString();
@@ -115,6 +120,22 @@ public class frm_mhs extends javax.swing.JFrame {
         txtTmptLahir.setText("");
         txtAlamat.setText("");
         txtPencarian.setText("");
+    }
+    
+    public void nonaktif_text(){
+        txtNim.setEnabled(false);
+        txtNama.setEnabled(false);
+        txtTglLahir.setEnabled(false);
+        txtTmptLahir.setEnabled(false);
+        txtAlamat.setEnabled(false);
+    }
+    
+    public void aktif_text(){
+        txtNim.setEnabled(true);
+        txtNama.setEnabled(true);
+        txtTglLahir.setEnabled(true);
+        txtTmptLahir.setEnabled(true);
+        txtAlamat.setEnabled(true);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -199,6 +220,12 @@ public class frm_mhs extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel6.setText("Tempat Lahir");
 
+        txtPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPencarianKeyTyped(evt);
+            }
+        });
+
         jLabel7.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel7.setText("Tanggal Lahir");
 
@@ -256,6 +283,11 @@ public class frm_mhs extends javax.swing.JFrame {
         });
 
         btnBatal.setText("Batal");
+        btnBatal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBatalActionPerformed(evt);
+            }
+        });
 
         btnKeluar.setText("Keluar");
         btnKeluar.addActionListener(new java.awt.event.ActionListener() {
@@ -394,44 +426,45 @@ public class frm_mhs extends javax.swing.JFrame {
     
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:
+        String nim = txtNim.getText();
+        String nama = txtNama.getText();
+        String tempat_lahir = txtTmptLahir.getText();
+        String tgl_lahir = dateToString(txtTglLahir.getDate());
+        String alamat = txtAlamat.getText();
+        
+        if (nim.isEmpty() | alamat.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data Tidak boleh Kosong");
+            txtNim.requestFocus();
+        } else{
+            try {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(db,user,pass);
+                Statement stt = kon.createStatement();
+                String SQL = "DELETE from mahasiswa "
+                        + "WHERE nim='"+tabelModel.getValueAt(row, 0).toString()+"';"   ;
+                stt.executeUpdate(SQL);
+                
+                tabelModel.removeRow(row);
+                stt.close();;
+                kon.close();
+                membersihkan_text();
+                btnSimpan.setEnabled(false);
+                btnUbah.setEnabled(false);
+                btnHapus.setEnabled(false);
+                btnTambah.setEnabled(true);
+                nonaktif_text();
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         // TODO add your handling code here:
-        String data[] = new String[5];
-        
-        if ((txtNim.getText().isEmpty()) || (txtTglLahir.getDate().toString().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong","Peringatan!", JOptionPane.WARNING_MESSAGE);
-            txtNim.requestFocus();
-        } else{
-            try {
-                String tglLahir = dateToString(txtTglLahir.getDate());
-                Class.forName(driver);
-                Connection kon = DriverManager.getConnection(db,user,pass);
-                Statement stt = kon.createStatement();
-                String SQL = "INSERT INTO mahasiswa(nim,nama,tempat_lahir,tgl_lahir,alamat)"
-                        + "VALUES "
-                        + "('"+txtNim.getText()+"','"
-                        + txtNama.getText()+"','"
-                        + txtTmptLahir.getText()+"','"
-                        + tglLahir+"','"
-                        + txtAlamat.getText()+"')";
-                stt.executeUpdate(SQL);
-                
-                data[0] = txtNim.getText();
-                data[1] = txtNama.getText();
-                data[2] = txtTmptLahir.getText();
-                data[3] = formatDateTabel.format(txtTglLahir.getDate());
-                data[4] = txtAlamat.getText();
-                tabelModel.insertRow(0, data);
-                stt.close();;
-                kon.close();;
-                        
-            } catch (Exception ex) {
-                System.err.println(ex.getMessage());    
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
+        membersihkan_text();
+        btnTambah.setEnabled(false);
+        btnSimpan.setEnabled(true);
+        aktif_text();
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -472,7 +505,7 @@ public class frm_mhs extends javax.swing.JFrame {
                 data[0] = nim;
                 data[1] = nama;
                 data[2] = tempat_lahir;
-                data[3] = tgl_lahir;
+                data[3] = formatDateTabel.format(txtTglLahir.getDate());
                 data[4] = alamat;
                 
                 tabelModel.removeRow(row);
@@ -480,6 +513,11 @@ public class frm_mhs extends javax.swing.JFrame {
                 stt.close();
                 kon.close();
                 membersihkan_text();
+                btnSimpan.setEnabled(false);
+                btnUbah.setEnabled(false);
+                btnHapus.setEnabled(false);
+                btnTambah.setEnabled(true);
+                nonaktif_text();
             } catch (Exception ex) {
                 System.err.println(ex.getMessage());
             }
@@ -495,7 +533,89 @@ public class frm_mhs extends javax.swing.JFrame {
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
+        String data[] = new String[5];
+        
+        if ((txtNim.getText().isEmpty()) || (txtTglLahir.getDate().toString().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong","Peringatan!", JOptionPane.WARNING_MESSAGE);
+            txtNim.requestFocus();
+        } else{
+            try {
+                String tglLahir = dateToString(txtTglLahir.getDate());
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(db,user,pass);
+                Statement stt = kon.createStatement();
+                String SQL = "INSERT INTO mahasiswa(nim,nama,tempat_lahir,tgl_lahir,alamat)"
+                        + "VALUES "
+                        + "('"+txtNim.getText()+"','"
+                        + txtNama.getText()+"','"
+                        + txtTmptLahir.getText()+"','"
+                        + tglLahir+"','"
+                        + txtAlamat.getText()+"')";
+                stt.executeUpdate(SQL);
+                
+                data[0] = txtNim.getText();
+                data[1] = txtNama.getText();
+                data[2] = txtTmptLahir.getText();
+                data[3] = formatDateTabel.format(txtTglLahir.getDate());
+                data[4] = txtAlamat.getText();
+                tabelModel.insertRow(0, data);
+                stt.close();;
+                kon.close();;
+                membersihkan_text();
+                btnSimpan.setEnabled(false);
+                btnTambah.setEnabled(true);
+                nonaktif_text();
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());    
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
+        // TODO add your handling code here:
+        membersihkan_text();
+        btnUbah.setEnabled(false);
+        btnHapus.setEnabled(false);
+        btnSimpan.setEnabled(false);
+        btnTambah.setEnabled(true);
+        nonaktif_text();
+        
+    }//GEN-LAST:event_btnBatalActionPerformed
+
+    private void txtPencarianKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPencarianKeyTyped
+        // TODO add your handling code here:
+        /*String nim = txtPencarian.getText();
+        
+        
+            try {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(db,user,pass);
+                Statement stt = kon.createStatement();
+                String SQL = "SELECT * from mahasiswa "
+                        + "WHERE nim LIKE '"+nim+"%';"   ;
+                ResultSet res = stt.executeQuery(SQL);
+                
+                int countRow = tabelModel.getRowCount();
+                for(int i = countRow - 1; i >= 0; i--){
+                    tabelModel.removeRow(i);
+                }
+                
+                while(res.next()){
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                data[3] = res.getString(4);
+                data[4] = res.getString(5);
+                tabelModel.addRow(data);
+                }
+                
+                stt.close();;
+                kon.close();
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+            }*/
+    }//GEN-LAST:event_txtPencarianKeyTyped
 
     /**
      * @param args the command line arguments
