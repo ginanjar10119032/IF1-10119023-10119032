@@ -393,8 +393,7 @@ public class frm_mhs extends javax.swing.JFrame {
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        frm_utama utama = new frm_utama();
-        utama.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_formWindowClosed
 
     private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
