@@ -15,8 +15,8 @@ public class main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        frm_utama utama = new frm_utama();
-        utama.setVisible(true);
+        frm_login login = new frm_login();
+        login.setVisible(true);
     }
     
 }

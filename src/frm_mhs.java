@@ -249,6 +249,11 @@ public class frm_mhs extends javax.swing.JFrame {
         });
 
         btnSimpan.setText("Simpan");
+        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimpanActionPerformed(evt);
+            }
+        });
 
         btnBatal.setText("Batal");
 
@@ -396,7 +401,7 @@ public class frm_mhs extends javax.swing.JFrame {
         String data[] = new String[5];
         
         if ((txtNim.getText().isEmpty()) || (txtTglLahir.getDate().toString().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Data tidak boelh kosong","Peringatan!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong","Peringatan!", JOptionPane.WARNING_MESSAGE);
             txtNim.requestFocus();
         } else{
             try {
@@ -487,6 +492,10 @@ public class frm_mhs extends javax.swing.JFrame {
             tampil_field();
         }
     }//GEN-LAST:event_tabelMhsMouseClicked
+
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSimpanActionPerformed
 
     /**
      * @param args the command line arguments
