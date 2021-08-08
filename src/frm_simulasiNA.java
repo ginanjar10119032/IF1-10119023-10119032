@@ -15,6 +15,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
      */
     public frm_simulasiNA() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

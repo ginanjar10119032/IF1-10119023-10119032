@@ -21,6 +21,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
     
     public frm_nilaimhs() {
         initComponents();
+        setLocationRelativeTo(null);
         
         tabelNilaiMhs.setModel(tabelModel);
     }

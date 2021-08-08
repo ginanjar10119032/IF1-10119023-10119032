@@ -15,6 +15,7 @@ public class frm_transaksi extends javax.swing.JFrame {
      */
     public frm_transaksi() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
