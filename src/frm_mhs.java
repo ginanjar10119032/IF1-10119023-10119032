@@ -44,6 +44,9 @@ public class frm_mhs extends javax.swing.JFrame {
         tabelMhs.setModel(tabelModel);
         setColWidth();
         setIsiTabel();
+        
+        btnUbah.setEnabled(false);
+        btnHapus.setEnabled(false);
     }
 
     public void setColWidth(){
@@ -86,6 +89,23 @@ public class frm_mhs extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
+    }
+    
+    public void tampil_field(){
+        row = tabelMhs.getSelectedRow();
+        
+        String date = tabelMhs.getValueAt(row, 3).toString();
+        
+        txtNim.setText(tabelMhs.getValueAt(row, 0).toString());
+        txtNama.setText(tabelMhs.getValueAt(row, 1).toString());
+        txtTmptLahir.setText(tabelMhs.getValueAt(row, 2).toString());
+        txtTglLahir.setDate(toDate(date));
+        txtAlamat.setText(tabelMhs.getValueAt(row, 4).toString());
+        btnTambah.setEnabled(false);
+        btnSimpan.setEnabled(false);
+        btnUbah.setEnabled(true);
+        btnHapus.setEnabled(true);
+        btnBatal.setEnabled(true);
     }
 
     /**
@@ -192,6 +212,11 @@ public class frm_mhs extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelMhs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelMhsMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabelMhs);
 
         btnTambah.setText("Tambah");
@@ -363,7 +388,7 @@ public class frm_mhs extends javax.swing.JFrame {
         String data[] = new String[5];
         
         if ((txtNim.getText().isEmpty()) || (txtTglLahir.getDate().toString().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Data tidak boelh kosong");
+            JOptionPane.showMessageDialog(null, "Data tidak boelh kosong","Peringatan!", JOptionPane.WARNING_MESSAGE);
             txtNim.requestFocus();
         } else{
             try {
@@ -422,10 +447,10 @@ public class frm_mhs extends javax.swing.JFrame {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(db,user,pass);
                 Statement stt = kon.createStatement();
-                String SQL = "UPDATE t_mahasiswa SET "
+                String SQL = "UPDATE mahasiswa SET "
                         + "nim='"+nim+"',"
                         + "nama='"+nama+"',"
-                        + "ttl='"+tempat_lahir+"',"
+                        + "tempat_lahir='"+tempat_lahir+"',"
                         + "tgl_lahir='"+tgl_lahir+"',"
                         + "alamat='"+alamat+"' "
                         + "WHERE nim='"+tabelModel.getValueAt(row, 0).toString()+"';"   ;
@@ -446,6 +471,13 @@ public class frm_mhs extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnUbahActionPerformed
+
+    private void tabelMhsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelMhsMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount()==1) {
+            tampil_field();
+        }
+    }//GEN-LAST:event_tabelMhsMouseClicked
 
     /**
      * @param args the command line arguments
