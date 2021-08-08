@@ -83,7 +83,7 @@
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Lenovo\Documents\GitHub\IF1-10119023-10119032\Gambar\mahasiswa.png"/>
+              <Image iconType="3" name="/Gambar/mahasiswa.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Data Mahasiswa"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -99,7 +99,7 @@
         <Component class="javax.swing.JButton" name="jButton2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Lenovo\Documents\GitHub\IF1-10119023-10119032\Gambar\mata_kuliah.png"/>
+              <Image iconType="3" name="/Gambar/mata_kuliah.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Data Mata Kuliah"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -115,7 +115,7 @@
         <Component class="javax.swing.JButton" name="jButton3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Lenovo\Documents\GitHub\IF1-10119023-10119032\Gambar\nilai.png"/>
+              <Image iconType="3" name="/Gambar/nilai.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Data Nilai"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -131,7 +131,7 @@
         <Component class="javax.swing.JButton" name="jButton4">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Lenovo\Documents\GitHub\IF1-10119023-10119032\Gambar\simulasi_na.png"/>
+              <Image iconType="3" name="/Gambar/simulasi_na.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Simulasi Nilai Akhir"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -147,7 +147,7 @@
         <Component class="javax.swing.JButton" name="jButton5">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Lenovo\Documents\GitHub\IF1-10119023-10119032\Gambar\simulasi_kasus.png"/>
+              <Image iconType="3" name="/Gambar/simulasi_kasus.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Simulasi Kasus"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -225,7 +225,7 @@
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Lenovo\Documents\GitHub\IF1-10119023-10119032\Gambar\ginanjar.png"/>
+              <Image iconType="3" name="/Gambar/ginanjar.png"/>
             </Property>
           </Properties>
         </Component>

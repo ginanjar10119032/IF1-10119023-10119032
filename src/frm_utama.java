@@ -61,7 +61,7 @@ public class frm_utama extends javax.swing.JFrame {
         jToolBar1.setRollover(true);
         jToolBar1.setFloatable(false);
 
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\GitHub\\IF1-10119023-10119032\\Gambar\\mahasiswa.png")); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/mahasiswa.png"))); // NOI18N
         jButton1.setText("Data Mahasiswa");
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -74,7 +74,7 @@ public class frm_utama extends javax.swing.JFrame {
         jToolBar1.add(jButton1);
         jToolBar1.add(jSeparator1);
 
-        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\GitHub\\IF1-10119023-10119032\\Gambar\\mata_kuliah.png")); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/mata_kuliah.png"))); // NOI18N
         jButton2.setText("Data Mata Kuliah");
         jButton2.setFocusable(false);
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -87,7 +87,7 @@ public class frm_utama extends javax.swing.JFrame {
         jToolBar1.add(jButton2);
         jToolBar1.add(jSeparator2);
 
-        jButton3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\GitHub\\IF1-10119023-10119032\\Gambar\\nilai.png")); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/nilai.png"))); // NOI18N
         jButton3.setText("Data Nilai");
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -100,7 +100,7 @@ public class frm_utama extends javax.swing.JFrame {
         jToolBar1.add(jButton3);
         jToolBar1.add(jSeparator3);
 
-        jButton4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\GitHub\\IF1-10119023-10119032\\Gambar\\simulasi_na.png")); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/simulasi_na.png"))); // NOI18N
         jButton4.setText("Simulasi Nilai Akhir");
         jButton4.setFocusable(false);
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -113,7 +113,7 @@ public class frm_utama extends javax.swing.JFrame {
         jToolBar1.add(jButton4);
         jToolBar1.add(jSeparator4);
 
-        jButton5.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\GitHub\\IF1-10119023-10119032\\Gambar\\simulasi_kasus.png")); // NOI18N
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/simulasi_kasus.png"))); // NOI18N
         jButton5.setText("Simulasi Kasus");
         jButton5.setFocusable(false);
         jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -129,7 +129,7 @@ public class frm_utama extends javax.swing.JFrame {
 
         jLabel2.setText("10119023 / Muhammad Farhan Roesfiazhar");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lenovo\\Documents\\GitHub\\IF1-10119023-10119032\\Gambar\\ginanjar.png")); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/ginanjar.png"))); // NOI18N
 
         jLabel4.setText("10119032 / Ginanjar Tubagus Gumilar");
 
