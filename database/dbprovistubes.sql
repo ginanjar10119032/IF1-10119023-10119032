@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 05, 2021 at 01:48 PM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 8.0.0
+-- Generation Time: Aug 08, 2021 at 09:11 PM
+-- Server version: 10.4.20-MariaDB
+-- PHP Version: 8.0.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,6 +24,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `list_makanan`
+--
+
+CREATE TABLE `list_makanan` (
+  `nama_makanan` varchar(30) NOT NULL,
+  `harga` int(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mahasiswa`
 --
 
@@ -34,6 +45,17 @@ CREATE TABLE `mahasiswa` (
   `tgl_lahir` date NOT NULL,
   `alamat` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `mahasiswa`
+--
+
+INSERT INTO `mahasiswa` (`nim`, `nama`, `tempat_lahir`, `tgl_lahir`, `alamat`) VALUES
+(10110001, 'Wongsojoyo Hulin', 'Balikpapan', '1998-01-13', 'Jl Proklamasi No. 56'),
+(10110002, 'Sudomo Iwan Lie', 'Bandung', '1998-06-17', 'Jl Gandaria VIII No.2'),
+(10110003, 'Suryadi Purnama Setiawan', 'Bandung', '1998-10-12', 'Jl Sunan Kudus No.85'),
+(10110004, 'Leony Yenny Sugiarto', 'Semarang', '1998-02-25', 'Jl Genuk Krajan III No.45'),
+(10110005, 'Wira Eka Sumadi', 'Bandung', '1997-11-02', 'Jl Guntur Madu No.7');
 
 -- --------------------------------------------------------
 
@@ -65,9 +87,46 @@ CREATE TABLE `nilai_mhs` (
   `keterangan` enum('Lulus','Tidak Lulus') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pengguna`
+--
+
+CREATE TABLE `pengguna` (
+  `username` varchar(20) NOT NULL,
+  `password` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pengguna`
+--
+
+INSERT INTO `pengguna` (`username`, `password`) VALUES
+('admin', 'admin');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pesanan`
+--
+
+CREATE TABLE `pesanan` (
+  `no_meja` int(5) NOT NULL,
+  `daftar_pesanan` varchar(40) NOT NULL,
+  `jumlah` int(5) NOT NULL,
+  `total_harga` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `list_makanan`
+--
+ALTER TABLE `list_makanan`
+  ADD PRIMARY KEY (`nama_makanan`);
 
 --
 -- Indexes for table `mahasiswa`
@@ -87,6 +146,12 @@ ALTER TABLE `mata_kuliah`
 ALTER TABLE `nilai_mhs`
   ADD KEY `nim` (`nim`),
   ADD KEY `nomor_mk` (`nomor_mk`);
+
+--
+-- Indexes for table `pesanan`
+--
+ALTER TABLE `pesanan`
+  ADD PRIMARY KEY (`no_meja`);
 
 --
 -- Constraints for dumped tables
