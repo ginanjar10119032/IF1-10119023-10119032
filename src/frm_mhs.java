@@ -108,6 +108,14 @@ public class frm_mhs extends javax.swing.JFrame {
         btnBatal.setEnabled(true);
     }
 
+    public void membersihkan_text(){
+        txtNim.setText("");
+        txtNama.setText("");
+        txtTglLahir.setCalendar(null);
+        txtTmptLahir.setText("");
+        txtAlamat.setText("");
+        txtPencarian.setText("");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -464,8 +472,9 @@ public class frm_mhs extends javax.swing.JFrame {
                 
                 tabelModel.removeRow(row);
                 tabelModel.insertRow(row, data);
-                stt.close();;
+                stt.close();
                 kon.close();
+                membersihkan_text();
             } catch (Exception ex) {
                 System.err.println(ex.getMessage());
             }
