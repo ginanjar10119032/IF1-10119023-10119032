@@ -28,6 +28,7 @@ public class frm_mhs extends javax.swing.JFrame {
     koneksi setPanel;
     String driver,db,user,pass;    
     String data[] = new String[5];
+    int row = 0;
     
     public frm_mhs() {
         initComponents();
@@ -407,6 +408,43 @@ public class frm_mhs extends javax.swing.JFrame {
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         // TODO add your handling code here:
+        String nim = txtNim.getText();
+        String nama = txtNama.getText();
+        String tempat_lahir = txtTmptLahir.getText();
+        String tgl_lahir = dateToString(txtTglLahir.getDate());
+        String alamat = txtAlamat.getText();
+        
+        if (nim.isEmpty() | alamat.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data Tidak boleh Kosong");
+            txtNim.requestFocus();
+        } else{
+            try {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(db,user,pass);
+                Statement stt = kon.createStatement();
+                String SQL = "UPDATE t_mahasiswa SET "
+                        + "nim='"+nim+"',"
+                        + "nama='"+nama+"',"
+                        + "ttl='"+tempat_lahir+"',"
+                        + "tgl_lahir='"+tgl_lahir+"',"
+                        + "alamat='"+alamat+"' "
+                        + "WHERE nim='"+tabelModel.getValueAt(row, 0).toString()+"';"   ;
+                stt.executeUpdate(SQL);
+                
+                data[0] = nim;
+                data[1] = nama;
+                data[2] = tempat_lahir;
+                data[3] = tgl_lahir;
+                data[4] = alamat;
+                
+                tabelModel.removeRow(row);
+                tabelModel.insertRow(row, data);
+                stt.close();;
+                kon.close();
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_btnUbahActionPerformed
 
     /**
