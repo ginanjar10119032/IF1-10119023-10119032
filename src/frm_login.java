@@ -156,7 +156,7 @@ public class frm_login extends javax.swing.JFrame {
             if (jTextField1.getText().trim().equals("") || jPasswordField1.getText().trim().equals("")) {
                 JOptionPane.showMessageDialog(null, "Seluruh Field Harus Diisi", null, JOptionPane.WARNING_MESSAGE);
             } else {
-                if (clicked > 0) {
+                if (clicked >= 0) {
                     Connection kon = DriverManager.getConnection(db, user, pass);
                     PreparedStatement ps;
                     ps = kon.prepareStatement("SELECT `username`, `password` FROM `pengguna` WHERE `username` = ? AND `password` = ?");
@@ -171,9 +171,13 @@ public class frm_login extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Nama pengguna dan password tidak ditemukan silahkan daftar",
                                 "Sisa Percobaan : "+clicked, JOptionPane.WARNING_MESSAGE);
                         clicked = clicked - 1;
+                        jTextField1.setText("");
+                        jPasswordField1.setText("");
+                        if (clicked == -1) {
+                            JOptionPane.showMessageDialog(null, "Percobaan Login Anda Habis",null,JOptionPane.WARNING_MESSAGE);
+                            this.dispose();
+                        }
                     }
-                } else {
-                    this.dispose();
                 }
             }
         } catch (SQLException ex) {
