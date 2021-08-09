@@ -1,4 +1,12 @@
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -19,11 +27,49 @@ public class frm_nilaimhs extends javax.swing.JFrame {
     model model = new model();
     private DefaultTableModel tabelModel = model.nilaiMhs;
     
+    koneksi setPanel;
+    String driver, db, user, pass;
+    String data[] = new String[5];
+    int row = 0;
+    
     public frm_nilaimhs() {
         initComponents();
         setLocationRelativeTo(null);
         
+        setPanel = new koneksi();
+        driver = setPanel.settingPanel("DBDriver");
+        db = setPanel.settingPanel("DBDatabase");
+        user = setPanel.settingPanel("DBUsername");
+        pass = setPanel.settingPanel("DBPassword");
+        
         tabelNilaiMhs.setModel(tabelModel);
+        isiBoxMhs();
+        
+    }
+    
+    public void isiBoxMhs(){
+        try {
+            txtNama.removeAllItems();
+            txtNama.addItem("---Pilih Nama Mahasiswa---");
+            
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nama from mahasiswa";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                txtNama.addItem(res.getString(1));
+            }
+            
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
     }
 
     /**
