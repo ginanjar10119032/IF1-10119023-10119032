@@ -250,6 +250,7 @@ public class frm_mhs extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelMhs.getTableHeader().setReorderingAllowed(false);
         tabelMhs.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelMhsMouseClicked(evt);

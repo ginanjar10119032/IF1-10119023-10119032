@@ -127,6 +127,7 @@ public class frm_transaksi extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelPesanan.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tabelPesanan);
 
         tabelListMakanan.setModel(new javax.swing.table.DefaultTableModel(
@@ -140,6 +141,7 @@ public class frm_transaksi extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3"
             }
         ));
+        tabelListMakanan.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tabelListMakanan);
 
         jPanel2.setBackground(new java.awt.Color(0, 153, 204));

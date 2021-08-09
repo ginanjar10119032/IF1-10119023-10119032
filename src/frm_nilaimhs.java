@@ -417,6 +417,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelNilaiMhs.getTableHeader().setReorderingAllowed(false);
         tabelNilaiMhs.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelNilaiMhsMouseClicked(evt);

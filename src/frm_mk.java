@@ -186,6 +186,7 @@ public class frm_mk extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelMK.getTableHeader().setReorderingAllowed(false);
         tabelMK.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelMKMouseClicked(evt);
