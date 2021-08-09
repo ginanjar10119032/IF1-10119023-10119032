@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
 import java.util.Date;
+
 /**
  *
  * @author Lenovo
@@ -21,62 +22,62 @@ public class frm_mhs extends javax.swing.JFrame {
      * Creates new form frm_mhs
      */
     model model = new model();
-    private DefaultTableModel tabelModel =  model.mhs;
-    
+    private DefaultTableModel tabelModel = model.mhs;
+
     DateFormat formatDateTabel = new SimpleDateFormat("dd - MMMM - yyyy");
-    
+
     koneksi setPanel;
-    String driver,db,user,pass;    
+    String driver, db, user, pass;
     String data[] = new String[5];
     int row = 0;
-    
+
     public frm_mhs() {
         initComponents();
-        
+
         setPanel = new koneksi();
         driver = setPanel.settingPanel("DBDriver");
         db = setPanel.settingPanel("DBDatabase");
         user = setPanel.settingPanel("DBUsername");
         pass = setPanel.settingPanel("DBPassword");
-        
+
         txtTglLahir.setDateFormatString("dd - MMMM - yyyy");
-        
+
         tabelMhs.setModel(tabelModel);
         setColWidth();
         setIsiTabel();
-        
+
         nonaktif_text();
-        
+
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
         btnSimpan.setEnabled(false);
     }
 
-    public void setColWidth(){
+    public void setColWidth() {
         tabelMhs.getColumnModel().getColumn(0).setPreferredWidth(80);
         tabelMhs.getColumnModel().getColumn(0).setMaxWidth(80);
         tabelMhs.getColumnModel().getColumn(0).setMinWidth(80);
-        
+
         tabelMhs.getColumnModel().getColumn(2).setPreferredWidth(110);
         tabelMhs.getColumnModel().getColumn(2).setMaxWidth(110);
         tabelMhs.getColumnModel().getColumn(2).setMinWidth(110);
-        
+
         tabelMhs.getColumnModel().getColumn(3).setPreferredWidth(120);
         tabelMhs.getColumnModel().getColumn(3).setMaxWidth(120);
         tabelMhs.getColumnModel().getColumn(3).setMinWidth(120);
     }
-    
-    private void setIsiTabel(){
-        String stat="";
+
+    private void setIsiTabel() {
+        String stat = "";
         try {
-            
+
             Class.forName(driver);
-            Connection kon = DriverManager.getConnection(db,user,pass);
-            
+            Connection kon = DriverManager.getConnection(db, user, pass);
+
             Statement stt = kon.createStatement();
             String SQL = "select * from mahasiswa";
             ResultSet res = stt.executeQuery(SQL);
-            while(res.next()){
+            while (res.next()) {
                 data[0] = res.getString(1);
                 data[1] = res.getString(2);
                 data[2] = res.getString(3);
@@ -93,14 +94,14 @@ public class frm_mhs extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-    
-    public void tampil_field(){
+
+    public void tampil_field() {
         aktif_text();
-        
+
         row = tabelMhs.getSelectedRow();
-        
+
         String date = tabelMhs.getValueAt(row, 3).toString();
-        
+
         txtNim.setText(tabelMhs.getValueAt(row, 0).toString());
         txtNama.setText(tabelMhs.getValueAt(row, 1).toString());
         txtTmptLahir.setText(tabelMhs.getValueAt(row, 2).toString());
@@ -113,7 +114,7 @@ public class frm_mhs extends javax.swing.JFrame {
         btnBatal.setEnabled(true);
     }
 
-    public void membersihkan_text(){
+    public void membersihkan_text() {
         txtNim.setText("");
         txtNama.setText("");
         txtTglLahir.setCalendar(null);
@@ -121,22 +122,23 @@ public class frm_mhs extends javax.swing.JFrame {
         txtAlamat.setText("");
         txtPencarian.setText("");
     }
-    
-    public void nonaktif_text(){
+
+    public void nonaktif_text() {
         txtNim.setEnabled(false);
         txtNama.setEnabled(false);
         txtTglLahir.setEnabled(false);
         txtTmptLahir.setEnabled(false);
         txtAlamat.setEnabled(false);
     }
-    
-    public void aktif_text(){
+
+    public void aktif_text() {
         txtNim.setEnabled(true);
         txtNama.setEnabled(true);
         txtTglLahir.setEnabled(true);
         txtTmptLahir.setEnabled(true);
         txtAlamat.setEnabled(true);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -404,8 +406,7 @@ public class frm_mhs extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    private java.util.Date toDate(String date){
+    private java.util.Date toDate(String date) {
         Date date2 = new Date();
         try {
             date2 = new SimpleDateFormat("dd - MMMM - yyyy").parse(date);
@@ -414,52 +415,56 @@ public class frm_mhs extends javax.swing.JFrame {
         }
         return date2;
     }
-    
-    private String dateToString(java.util.Date date2){
+
+    private String dateToString(java.util.Date date2) {
         SimpleDateFormat frmt = new SimpleDateFormat("yyyy/MM/dd");
-        
+
         String date = frmt.format(date2);
         return date;
     }
-    
+
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:
-        String nim = txtNim.getText();
-        String nama = txtNama.getText();
-        String tempat_lahir = txtTmptLahir.getText();
-        String tgl_lahir = dateToString(txtTglLahir.getDate());
-        String alamat = txtAlamat.getText();
-        
-        if (nim.isEmpty() | alamat.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Data Tidak boleh Kosong");
-            txtNim.requestFocus();
-        } else{
-            try {
-                Class.forName(driver);
-                Connection kon = DriverManager.getConnection(db,user,pass);
-                Statement stt = kon.createStatement();
-                String SQL = "DELETE from mahasiswa "
-                        + "WHERE nim='"+tabelModel.getValueAt(row, 0).toString()+"';"   ;
-                stt.executeUpdate(SQL);
-                
-                tabelModel.removeRow(row);
-                stt.close();;
-                kon.close();
-                membersihkan_text();
-                btnSimpan.setEnabled(false);
-                btnUbah.setEnabled(false);
-                btnHapus.setEnabled(false);
-                btnTambah.setEnabled(true);
-                nonaktif_text();
-            } catch (Exception ex) {
-                System.err.println(ex.getMessage());
+        int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin menghapus Data Mahasiswa dengan NIM "
+                .concat(txtNim.getText()), "Konfirmasi", JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            String nim = txtNim.getText();
+            String nama = txtNama.getText();
+            String tempat_lahir = txtTmptLahir.getText();
+            String tgl_lahir = dateToString(txtTglLahir.getDate());
+            String alamat = txtAlamat.getText();
+
+            if (nim.isEmpty() | alamat.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Data Tidak boleh Kosong");
+                txtNim.requestFocus();
+            } else {
+                try {
+                    Class.forName(driver);
+                    Connection kon = DriverManager.getConnection(db, user, pass);
+                    Statement stt = kon.createStatement();
+                    String SQL = "DELETE from mahasiswa "
+                            + "WHERE nim='" + tabelModel.getValueAt(row, 0).toString() + "';";
+                    stt.executeUpdate(SQL);
+
+                    tabelModel.removeRow(row);
+                    stt.close();;
+                    kon.close();
+                    membersihkan_text();
+                    btnSimpan.setEnabled(false);
+                    btnUbah.setEnabled(false);
+                    btnHapus.setEnabled(false);
+                    btnTambah.setEnabled(true);
+                    nonaktif_text();
+                } catch (Exception ex) {
+                    System.err.println(ex.getMessage());
+                }
             }
         }
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        this.dispose();
     }//GEN-LAST:event_formWindowClosed
 
     private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
@@ -474,30 +479,30 @@ public class frm_mhs extends javax.swing.JFrame {
         String tempat_lahir = txtTmptLahir.getText();
         String tgl_lahir = dateToString(txtTglLahir.getDate());
         String alamat = txtAlamat.getText();
-        
+
         if (nim.isEmpty() | alamat.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Data Tidak boleh Kosong");
             txtNim.requestFocus();
-        } else{
+        } else {
             try {
                 Class.forName(driver);
-                Connection kon = DriverManager.getConnection(db,user,pass);
+                Connection kon = DriverManager.getConnection(db, user, pass);
                 Statement stt = kon.createStatement();
                 String SQL = "UPDATE mahasiswa SET "
-                        + "nim='"+nim+"',"
-                        + "nama='"+nama+"',"
-                        + "tempat_lahir='"+tempat_lahir+"',"
-                        + "tgl_lahir='"+tgl_lahir+"',"
-                        + "alamat='"+alamat+"' "
-                        + "WHERE nim='"+tabelModel.getValueAt(row, 0).toString()+"';"   ;
+                        + "nim='" + nim + "',"
+                        + "nama='" + nama + "',"
+                        + "tempat_lahir='" + tempat_lahir + "',"
+                        + "tgl_lahir='" + tgl_lahir + "',"
+                        + "alamat='" + alamat + "' "
+                        + "WHERE nim='" + tabelModel.getValueAt(row, 0).toString() + "';";
                 stt.executeUpdate(SQL);
-                
+
                 data[0] = nim;
                 data[1] = nama;
                 data[2] = tempat_lahir;
                 data[3] = formatDateTabel.format(txtTglLahir.getDate());
                 data[4] = alamat;
-                
+
                 tabelModel.removeRow(row);
                 tabelModel.insertRow(row, data);
                 stt.close();
@@ -516,7 +521,7 @@ public class frm_mhs extends javax.swing.JFrame {
 
     private void tabelMhsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelMhsMouseClicked
         // TODO add your handling code here:
-        if (evt.getClickCount()==1) {
+        if (evt.getClickCount() == 1) {
             tampil_field();
         }
     }//GEN-LAST:event_tabelMhsMouseClicked
@@ -524,25 +529,25 @@ public class frm_mhs extends javax.swing.JFrame {
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
         String data[] = new String[5];
-        
+
         if ((txtNim.getText().isEmpty()) || (txtTglLahir.getDate().toString().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong","Peringatan!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong", "Peringatan!", JOptionPane.WARNING_MESSAGE);
             txtNim.requestFocus();
-        } else{
+        } else {
             try {
                 String tglLahir = dateToString(txtTglLahir.getDate());
                 Class.forName(driver);
-                Connection kon = DriverManager.getConnection(db,user,pass);
+                Connection kon = DriverManager.getConnection(db, user, pass);
                 Statement stt = kon.createStatement();
                 String SQL = "INSERT INTO mahasiswa(nim,nama,tempat_lahir,tgl_lahir,alamat)"
                         + "VALUES "
-                        + "('"+txtNim.getText()+"','"
-                        + txtNama.getText()+"','"
-                        + txtTmptLahir.getText()+"','"
-                        + tglLahir+"','"
-                        + txtAlamat.getText()+"')";
+                        + "('" + txtNim.getText() + "','"
+                        + txtNama.getText() + "','"
+                        + txtTmptLahir.getText() + "','"
+                        + tglLahir + "','"
+                        + txtAlamat.getText() + "')";
                 stt.executeUpdate(SQL);
-                
+
                 data[0] = txtNim.getText();
                 data[1] = txtNama.getText();
                 data[2] = txtTmptLahir.getText();
@@ -556,7 +561,7 @@ public class frm_mhs extends javax.swing.JFrame {
                 btnTambah.setEnabled(true);
                 nonaktif_text();
             } catch (Exception ex) {
-                System.err.println(ex.getMessage());    
+                System.err.println(ex.getMessage());
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -570,7 +575,6 @@ public class frm_mhs extends javax.swing.JFrame {
         btnSimpan.setEnabled(false);
         btnTambah.setEnabled(true);
         nonaktif_text();
-        
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void txtPencarianKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPencarianKeyTyped

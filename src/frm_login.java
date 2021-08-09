@@ -167,6 +167,7 @@ public class frm_login extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Berhasil masuk");
                         frm_utama utama = new frm_utama();
                         utama.setVisible(true);
+                        this.setVisible(false);
                     } else {
                         JOptionPane.showMessageDialog(null, "Nama pengguna dan password tidak ditemukan silahkan daftar",
                                 "Sisa Percobaan : "+clicked, JOptionPane.WARNING_MESSAGE);
