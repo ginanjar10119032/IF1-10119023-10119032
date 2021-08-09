@@ -75,7 +75,7 @@ public class model {
                     "Absen", "Tgs1", "Tgs2", "Tgs3",
                     "UTS", "UAS", "Nilai Absen",
                     "Nilai Tugas", "Nilai UTS", "Nilai UAS",
-                    "Nilai Absen", "Index", "Keterangan"
+                    "Nilai Akhir", "Index", "Keterangan"
                 }
         ) {
             boolean[] canEdit = new boolean[]{

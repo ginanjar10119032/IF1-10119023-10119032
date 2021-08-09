@@ -90,8 +90,8 @@
                                       <Component id="txtNamaMK" min="-2" pref="203" max="-2" attributes="0"/>
                                       <Component id="txtUAS" min="-2" pref="40" max="-2" attributes="0"/>
                                       <Component id="txtUTS" min="-2" pref="40" max="-2" attributes="0"/>
-                                      <Component id="txtKodeMK" min="-2" pref="100" max="-2" attributes="0"/>
-                                      <Component id="txtAngkatan" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtKodeMK" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                                      <Component id="txtAngkatan" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -464,6 +464,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="BATAL"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBatalActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnKeluar">
           <Properties>

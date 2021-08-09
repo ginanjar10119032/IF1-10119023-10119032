@@ -35,7 +35,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
 
     koneksi setPanel;
     String driver, db, user, pass;
-    String data[] = new String[5];
+    String data[] = new String[15];
     int row = 0;
 
     public frm_nilaimhs() {
@@ -44,7 +44,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
 
         txtNim.setEditable(false);
         txtKodeMK.setEditable(false);
-        
+
         setPanel = new koneksi();
         driver = setPanel.settingPanel("DBDriver");
         db = setPanel.settingPanel("DBDatabase");
@@ -54,6 +54,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         tabelNilaiMhs.setModel(tabelModel);
         isiBoxMhs();
         isiBoxMK();
+        setIsiTabel();
 
         nonaktif_text();
 
@@ -77,6 +78,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
             ResultSet res = stt.executeQuery(SQL);
             while (res.next()) {
                 txtNama.addItem(res.getString(1));
+                txtAngkatan.setDate(toDate(formatter.format(date)));
             }
 
             res.close();
@@ -113,7 +115,72 @@ public class frm_nilaimhs extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-    
+
+    private void setIsiTabel() {
+        String stat = "";
+        char index;
+        String kelulusan;
+        Double absen, tgs1, tgs2, tgs3, uts, uas, nilaiAbsen, nilaiTgs, nilaiUts, nilaiUas, na;
+        try {
+
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select * from nilai_mhs";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                absen = Double.valueOf(res.getString(3));
+                tgs1 = Double.valueOf(res.getString(4));
+                tgs2 = Double.valueOf(res.getString(5));
+                tgs3 = Double.valueOf(res.getString(6));
+                uts = Double.valueOf(res.getString(7));
+                uas = Double.valueOf(res.getString(8));
+
+                nilaiAbsen = ((absen / 14) * 100 * 5) / 100;
+                nilaiTgs = ((tgs1 + tgs2 + tgs3) / 3) * 0.25;
+                nilaiUts = uts * 0.3;
+                nilaiUas = uas * 0.4;
+
+                if (res.getInt(9) >= 80) {
+                    index = 'A';
+                } else if (res.getInt(9) >= 68) {
+                    index = 'B';
+                } else if (res.getInt(9) >= 56) {
+                    index = 'C';
+                } else if (res.getInt(9) >= 45) {
+                    index = 'D';
+                } else {
+                    index = 'E';
+                }
+
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                data[3] = res.getString(4);
+                data[4] = res.getString(5);
+                data[5] = res.getString(6);
+                data[6] = res.getString(7);
+                data[7] = res.getString(8);
+                data[8] = String.valueOf(nilaiAbsen.intValue());
+                data[9] = String.valueOf(nilaiTgs.intValue());
+                data[10] = String.valueOf(nilaiUts.intValue());
+                data[11] = String.valueOf(nilaiUas.intValue());
+                data[12] = res.getString(9);
+                data[13] = String.valueOf(index);
+                data[14] = res.getString(10);
+                tabelModel.addRow(data);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+
     public void tampil_field() {
         aktif_text();
 
@@ -139,6 +206,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         txtNamaMK.setSelectedIndex(0);
         txtNim.setText("");
         txtKodeMK.setText("");
+        txtKehadiran.setText("");
         txtTugas1.setText("");
         txtTugas2.setText("");
         txtTugas3.setText("");
@@ -147,27 +215,25 @@ public class frm_nilaimhs extends javax.swing.JFrame {
     }
 
     public void nonaktif_text() {
-        txtNama.setEditable(false);
-        txtNamaMK.setEditable(false);
-        txtNim.setEditable(false);
-        txtKodeMK.setEditable(false);
-        txtTugas1.setEditable(false);
-        txtTugas2.setEditable(false);
-        txtTugas3.setEditable(false);
-        txtUTS.setEditable(false);
-        txtUAS.setEditable(false);
+        txtNama.setEnabled(false);
+        txtNamaMK.setEnabled(false);
+        txtKehadiran.setEnabled(false);
+        txtTugas1.setEnabled(false);
+        txtTugas2.setEnabled(false);
+        txtTugas3.setEnabled(false);
+        txtUTS.setEnabled(false);
+        txtUAS.setEnabled(false);
     }
 
     public void aktif_text() {
-        txtNama.setEditable(true);
-        txtNamaMK.setEditable(true);
-        txtNim.setEditable(true);
-        txtKodeMK.setEditable(true);
-        txtTugas1.setEditable(true);
-        txtTugas2.setEditable(true);
-        txtTugas3.setEditable(true);
-        txtUTS.setEditable(true);
-        txtUAS.setEditable(true);
+        txtNama.setEnabled(true);
+        txtNamaMK.setEnabled(true);
+        txtKehadiran.setEnabled(true);
+        txtTugas1.setEnabled(true);
+        txtTugas2.setEnabled(true);
+        txtTugas3.setEnabled(true);
+        txtUTS.setEnabled(true);
+        txtUAS.setEnabled(true);
     }
 
     /**
@@ -341,6 +407,11 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         });
 
         btnBatal.setText("BATAL");
+        btnBatal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBatalActionPerformed(evt);
+            }
+        });
 
         btnKeluar.setText("KELUAR");
 
@@ -399,7 +470,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                                     .addComponent(txtUAS, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtUTS, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtKodeMK, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtAngkatan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(txtAngkatan, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -510,7 +581,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         }
         return date2;
     }
-    
+
     private void txtNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaActionPerformed
         // TODO add your handling code here:
         txtNama.addActionListener(new ActionListener() {
@@ -537,7 +608,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                         System.exit(0);
                     }
-                }else {
+                } else {
                     txtNim.setText("");
                 }
             }
@@ -620,33 +691,33 @@ public class frm_nilaimhs extends javax.swing.JFrame {
             nilaiUts = uts * 0.3;
             nilaiUas = uas * 0.4;
             na = nilaiAbsen + nilaiTgs + nilaiUts + nilaiUas;
-            
+
             if (na >= 80) {
                 index = 'A';
                 kelulusan = "LULUS";
-            }else if (na >= 68) {
+            } else if (na >= 68) {
                 index = 'B';
                 kelulusan = "LULUS";
-            }else if (na >= 56) {
+            } else if (na >= 56) {
                 index = 'C';
                 kelulusan = "LULUS";
-            }else if (na >= 45) {
+            } else if (na >= 45) {
                 index = 'D';
                 kelulusan = "Tidak Lulus";
-            }else {
+            } else {
                 index = 'E';
                 kelulusan = "Tidak Lulus";
             }
-            
+
             if (absen < 11) {
                 kelulusan = "Tidak Lulus";
             }
-            
+
             try {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(db, user, pass);
                 Statement stt = kon.createStatement();
-                String SQL = "INSERT INTO nilai_mhs"
+                String SQL = "INSERT INTO nilai_mhs "
                         + "VALUES "
                         + "('" + txtNim.getText() + "','"
                         + txtKodeMK.getText() + "','"
@@ -656,7 +727,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                         + txtTugas3.getText() + "','"
                         + txtUTS.getText() + "','"
                         + txtUAS.getText() + "','"
-                        + String.valueOf(na.intValue())+ "','"
+                        + String.valueOf(na.intValue()) + "','"
                         + kelulusan + "')";
                 stt.executeUpdate(SQL);
 
@@ -668,13 +739,14 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                 data[5] = txtTugas3.getText();
                 data[6] = txtUTS.getText();
                 data[7] = txtUAS.getText();
-                data[8] = String.valueOf(nilaiTgs.intValue());
-                data[9] = String.valueOf(nilaiUts.intValue());
-                data[10] = String.valueOf(nilaiUas.intValue());
-                data[11] = String.valueOf(nilaiAbsen.intValue());
-                data[12] = String.valueOf(index);
-                data[13] = kelulusan;
-                
+                data[8] = String.valueOf(nilaiAbsen.intValue());
+                data[9] = String.valueOf(nilaiTgs.intValue());
+                data[10] = String.valueOf(nilaiUts.intValue());
+                data[11] = String.valueOf(nilaiUas.intValue());
+                data[12] = String.valueOf(na.intValue());
+                data[13] = String.valueOf(index);
+                data[14] = kelulusan;
+
                 tabelModel.insertRow(0, data);
                 stt.close();
                 kon.close();
@@ -688,6 +760,16 @@ public class frm_nilaimhs extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
+        // TODO add your handling code here:
+        membersihkan_text();
+        nonaktif_text();
+        btnSimpan.setEnabled(false);
+        btnUbah.setEnabled(false);
+        btnHapus.setEnabled(false);
+        btnTambah.setEnabled(true);
+    }//GEN-LAST:event_btnBatalActionPerformed
 
     /**
      * @param args the command line arguments
