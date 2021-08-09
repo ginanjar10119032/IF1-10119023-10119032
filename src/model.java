@@ -116,11 +116,11 @@ public class model {
         return new DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Nama Makanan", "Harga"
+                    "Nama Makanan", "Harga", "Jumlah"
                 }
         ) {
             boolean[] canEdit = new boolean[]{
-                false, false
+                false, false, true
             };
 
             @Override

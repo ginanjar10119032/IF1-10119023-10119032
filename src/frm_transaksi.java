@@ -5,13 +5,14 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.TableView;
+import javax.swing.DefaultCellEditor;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Lenovo
@@ -21,11 +22,13 @@ public class frm_transaksi extends javax.swing.JFrame {
     model model = new model();
     private final DefaultTableModel tabelModel = model.listMakanan;
     private final DefaultTableModel tabelModel2 = model.pesanan;
-    
+
     koneksi setPanel;
     String driver, db, user, pass;
     String data[] = new String[5];
+    String dataMakanan[] = new String[3];
     int row = 0;
+
     /**
      * Creates new form frm_transaksi
      */
@@ -40,12 +43,48 @@ public class frm_transaksi extends javax.swing.JFrame {
 
         tabelListMakanan.setModel(tabelModel);
         tabelPesanan.setModel(tabelModel2);
+
+        isiTabelListMakanan();
+        tabelListMakanan.changeSelection(row, 2, false, false);
+        tabelListMakanan.editCellAt(row, 2);
+        tabelListMakanan.getEditorComponent().requestFocus();
+
         setColWidth();
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
         btnSimpan.setEnabled(false);
     }
-    
+
+    private void isiTabelListMakanan() {
+        String stat = "";
+        try {
+
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select * from list_makanan";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                dataMakanan[0] = res.getString(1);
+                dataMakanan[1] = res.getString(2);
+                dataMakanan[2] = null;
+                tabelModel.addRow(dataMakanan);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+
+    private void clickTabel() {
+        row = tabelListMakanan.getSelectedRow();
+    }
+
     private void setColWidth() {
         tabelPesanan.getColumnModel().getColumn(0).setPreferredWidth(80);
         tabelPesanan.getColumnModel().getColumn(0).setMaxWidth(80);
@@ -55,8 +94,6 @@ public class frm_transaksi extends javax.swing.JFrame {
         tabelPesanan.getColumnModel().getColumn(2).setMaxWidth(70);
         tabelPesanan.getColumnModel().getColumn(2).setMinWidth(70);
     }
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -142,6 +179,11 @@ public class frm_transaksi extends javax.swing.JFrame {
             }
         ));
         tabelListMakanan.getTableHeader().setReorderingAllowed(false);
+        tabelListMakanan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelListMakananMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabelListMakanan);
 
         jPanel2.setBackground(new java.awt.Color(0, 153, 204));
@@ -278,13 +320,23 @@ public class frm_transaksi extends javax.swing.JFrame {
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnKeluarActionPerformed
+
+    private void tabelListMakananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelListMakananMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 1) {
+            clickTabel();
+            tabelListMakanan.changeSelection(row, 2, false, false);
+            tabelListMakanan.editCellAt(row, 2);
+            tabelListMakanan.getEditorComponent().requestFocus();
+        }
+    }//GEN-LAST:event_tabelListMakananMouseClicked
 
     /**
      * @param args the command line arguments
