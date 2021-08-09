@@ -138,8 +138,6 @@ public class frm_utama extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton5);
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
-
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/farhan.png"))); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -155,7 +153,7 @@ public class frm_utama extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(46, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -180,7 +178,7 @@ public class frm_utama extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel4))
                 .addContainerGap(83, Short.MAX_VALUE))

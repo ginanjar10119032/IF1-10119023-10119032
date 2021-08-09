@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class model {
 
-    public DefaultTableModel mhs, mk, nilaiMhs, pesanan, listMakanan;
+    public DefaultTableModel mhs, mk, nilaiMhs, pesanan, listMakanan, simulasiNA;
 
     public model() {
         this.mhs = modelMhs();
@@ -22,6 +22,7 @@ public class model {
         this.nilaiMhs = modelNilaiMhs();
         this.pesanan = modelPesanan();
         this.listMakanan = modelListMakanan();
+        this.simulasiNA = modelSimulasiNA();
     }
 
     private DefaultTableModel modelMhs() {
@@ -120,6 +121,32 @@ public class model {
         ) {
             boolean[] canEdit = new boolean[]{
                 false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return canEdit[column];
+            }
+
+        };
+    }
+    
+    private DefaultTableModel modelSimulasiNA() {
+        return new DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "Nama M.K.","Persentase Absen",
+                    "Persentase Tugas", "Persentase UTS",
+                    "Persentase UAS", "Absensi",
+                     "Tgs1", "Tgs2", "Tgs3",
+                    "UTS", "UAS", "Nilai Absen",
+                    "Nilai Tugas", "Nilai UTS", "Nilai UAS",
+                    "Nilai Akhir", "Index", "Keterangan"
+                }
+        ) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false, false, false, false,
+                 false, false, false, false, false, false, false
             };
 
             @Override

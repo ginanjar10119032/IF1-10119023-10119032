@@ -24,7 +24,7 @@ public class frm_transaksi extends javax.swing.JFrame {
     
     koneksi setPanel;
     String driver, db, user, pass;
-    String data[] = new String[2];
+    String data[] = new String[5];
     int row = 0;
     /**
      * Creates new form frm_transaksi
