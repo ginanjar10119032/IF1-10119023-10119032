@@ -14,12 +14,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class model {
 
-    public DefaultTableModel mhs, mk, nilaiMhs;
+    public DefaultTableModel mhs, mk, nilaiMhs, pesanan, listMakanan;
 
     public model() {
         this.mhs = modelMhs();
         this.mk = modelMk();
         this.nilaiMhs = modelNilaiMhs();
+        this.pesanan = modelPesanan();
+        this.listMakanan = modelListMakanan();
     }
 
     private DefaultTableModel modelMhs() {
@@ -79,6 +81,45 @@ public class model {
             boolean[] canEdit = new boolean[]{
                 false, false, false, false, false, false, false,
                  false, false, false, false, false, false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return canEdit[column];
+            }
+
+        };
+    }       
+    
+    private DefaultTableModel modelPesanan() {
+        return new DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "Nomor Meja", "Daftar Pesanan",
+                    "Jumlah", "Total Harga"
+                }
+        ) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return canEdit[column];
+            }
+
+        };
+    }
+    
+    private DefaultTableModel modelListMakanan() {
+        return new DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "Nama Makanan", "Harga"
+                }
+        ) {
+            boolean[] canEdit = new boolean[]{
+                false, false
             };
 
             @Override
