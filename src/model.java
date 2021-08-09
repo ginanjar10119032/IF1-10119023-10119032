@@ -8,88 +8,84 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author 
- * Nama : Muhammad Farhan R <farhan.10119023@mahasiswa.unikom.ac.id>
- * NIM  : 10119023
- * Kelas: IF1
- * 
+ * @author Nama : Muhammad Farhan R <farhan.10119023@mahasiswa.unikom.ac.id>
+ * NIM : 10119023 Kelas: IF1
+ *
  */
 public class model {
-    public DefaultTableModel mhs,mk,nilaiMhs;
-    
-    public model(){
+
+    public DefaultTableModel mhs, mk, nilaiMhs;
+
+    public model() {
         this.mhs = modelMhs();
         this.mk = modelMk();
         this.nilaiMhs = modelNilaiMhs();
     }
-    
-    private DefaultTableModel modelMhs(){
+
+    private DefaultTableModel modelMhs() {
         return new DefaultTableModel(
-                new Object[][] {},
-                new String[] {
+                new Object[][]{},
+                new String[]{
                     "NIM",
                     "Nama",
                     "Tempat Lahir",
                     "Tanggal Lahir",
                     "Alamat"
                 }
-                
-        )
-        {
-          boolean[] canEdit = new boolean[]{
-            false,false,false,false,false
-          };
-          
-          public boolean tableCellEdit(int rowIndex, int colIndex){
-              return canEdit[colIndex];
-          }
-          
+        ) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false, false
+            };
+            
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return canEdit[column];
+            }
+
         };
     }
-    
-    private DefaultTableModel modelMk(){
+
+    private DefaultTableModel modelMk() {
         return new DefaultTableModel(
-                new Object[][] {},
-                new String[] {
+                new Object[][]{},
+                new String[]{
                     "Nomor M.K.",
                     "Nama M.K."
                 }
-                
-        )
-        {
-          boolean[] canEdit = new boolean[]{
-            false,false
-          };
-          
-          public boolean tableCellEdit(int rowIndex, int colIndex){
-              return canEdit[colIndex];
-          }
-          
+        ) {
+            boolean[] canEdit = new boolean[]{
+                false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return canEdit[column];
+            }
+
         };
     }
-    
-    private DefaultTableModel modelNilaiMhs(){
+
+    private DefaultTableModel modelNilaiMhs() {
         return new DefaultTableModel(
-                new Object[][] {},
-                new String[] {
-                    "Nama","Nama M.K.",
-                    "Absen","Tgs1","Tgs2","Tgs3",
-                    "UTS","UAS","Nilai Absen",
-                    "Nilai Tugas","Nilai UTS","Nilai UAS",
-                    "Nilai Absen", "Index","Keterangan"
+                new Object[][]{},
+                new String[]{
+                    "Nama", "Nama M.K.",
+                    "Absen", "Tgs1", "Tgs2", "Tgs3",
+                    "UTS", "UAS", "Nilai Absen",
+                    "Nilai Tugas", "Nilai UTS", "Nilai UAS",
+                    "Nilai Absen", "Index", "Keterangan"
                 }
-                
-        )
-        {
-          boolean[] canEdit = new boolean[]{
-            false,false,false,false,false,false,false
-                  ,false,false,false,false,false,false,false
-          };
-          
-          public boolean tableCellEdit(int rowIndex, int colIndex){
-              return canEdit[colIndex];
-          }
-          
+        ) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false, false, false, false,
+                 false, false, false, false, false, false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return canEdit[column];
+            }
+
         };
     }
 }

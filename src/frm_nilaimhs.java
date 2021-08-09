@@ -52,9 +52,12 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         isiBoxMhs();
         isiBoxMK();
 
+        btnUbah.setEnabled(false);
+        btnHapus.setEnabled(false);
+        btnSimpan.setEnabled(false);
     }
 
-    public void isiBoxMhs() {
+    private void isiBoxMhs() {
         try {
             txtNama.removeAllItems();
             txtNama.addItem("----- Pilih Nama Mahasiswa -----");
@@ -79,7 +82,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         }
     }
 
-    public void isiBoxMK() {
+    private void isiBoxMK() {
         try {
             txtNamaMK.removeAllItems();
             txtNamaMK.addItem("----- Pilih Nama Mata Kuliah -----");
@@ -102,6 +105,33 @@ public class frm_nilaimhs extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
+    }
+    
+    public void tampil_field() {
+        aktif_text();
+
+        row = tabelNilaiMhs.getSelectedRow();
+
+        txtNama.setSelectedItem(tabelNilaiMhs.getValueAt(row, 0).toString());
+        txtNamaMK.setSelectedItem(tabelNilaiMhs.getValueAt(row, 1).toString());
+        txtKehadiran.setText(tabelNilaiMhs.getValueAt(row, 2).toString());
+        txtTugas1.setText(tabelNilaiMhs.getValueAt(row, 3).toString());
+        txtTugas2.setText(tabelNilaiMhs.getValueAt(row, 4).toString());
+        txtTugas3.setText(tabelNilaiMhs.getValueAt(row, 5).toString());
+        btnTambah.setEnabled(false);
+        btnSimpan.setEnabled(false);
+        btnUbah.setEnabled(true);
+        btnHapus.setEnabled(true);
+        btnBatal.setEnabled(true);
+    }
+
+    public void membersihkan_text() {
+    }
+
+    public void nonaktif_text() {
+    }
+
+    public void aktif_text() {
     }
 
     /**
@@ -145,6 +175,12 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         txtAngkatan = new javax.swing.JTextField();
         scrollpane = new javax.swing.JScrollPane();
         tabelNilaiMhs = new javax.swing.JTable();
+        btnTambah = new javax.swing.JButton();
+        btnUbah = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        btnSimpan = new javax.swing.JButton();
+        btnBatal = new javax.swing.JButton();
+        btnKeluar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -249,6 +285,18 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         ));
         scrollpane.setViewportView(tabelNilaiMhs);
 
+        btnTambah.setText("TAMBAH");
+
+        btnUbah.setText("UBAH");
+
+        btnHapus.setText("HAPUS");
+
+        btnSimpan.setText("SIMPAN");
+
+        btnBatal.setText("BATAL");
+
+        btnKeluar.setText("KELUAR");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -303,6 +351,20 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                                 .addComponent(txtPencarian, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(161, 161, 161)
+                .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,7 +430,15 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                     .addComponent(txtTugas3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(scrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTambah)
+                    .addComponent(btnUbah)
+                    .addComponent(btnHapus)
+                    .addComponent(btnSimpan)
+                    .addComponent(btnBatal)
+                    .addComponent(btnKeluar))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel1, "card2");
@@ -487,6 +557,12 @@ public class frm_nilaimhs extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBatal;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnKeluar;
+    private javax.swing.JButton btnSimpan;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JButton btnUbah;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

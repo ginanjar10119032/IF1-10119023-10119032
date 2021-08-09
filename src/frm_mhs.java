@@ -22,7 +22,7 @@ public class frm_mhs extends javax.swing.JFrame {
      * Creates new form frm_mhs
      */
     model model = new model();
-    private DefaultTableModel tabelModel = model.mhs;
+    private final DefaultTableModel tabelModel = model.mhs;
 
     DateFormat formatDateTabel = new SimpleDateFormat("dd - MMMM - yyyy");
 
@@ -53,7 +53,7 @@ public class frm_mhs extends javax.swing.JFrame {
         btnSimpan.setEnabled(false);
     }
 
-    public void setColWidth() {
+    private void setColWidth() {
         tabelMhs.getColumnModel().getColumn(0).setPreferredWidth(80);
         tabelMhs.getColumnModel().getColumn(0).setMaxWidth(80);
         tabelMhs.getColumnModel().getColumn(0).setMinWidth(80);
@@ -123,7 +123,7 @@ public class frm_mhs extends javax.swing.JFrame {
         txtPencarian.setText("");
     }
 
-    public void nonaktif_text() {
+    private void nonaktif_text() {
         txtNim.setEnabled(false);
         txtNama.setEnabled(false);
         txtTglLahir.setEnabled(false);
@@ -448,7 +448,7 @@ public class frm_mhs extends javax.swing.JFrame {
                     stt.executeUpdate(SQL);
 
                     tabelModel.removeRow(row);
-                    stt.close();;
+                    stt.close();
                     kon.close();
                     membersihkan_text();
                     btnSimpan.setEnabled(false);
@@ -554,8 +554,8 @@ public class frm_mhs extends javax.swing.JFrame {
                 data[3] = formatDateTabel.format(txtTglLahir.getDate());
                 data[4] = txtAlamat.getText();
                 tabelModel.insertRow(0, data);
-                stt.close();;
-                kon.close();;
+                stt.close();
+                kon.close();
                 membersihkan_text();
                 btnSimpan.setEnabled(false);
                 btnTambah.setEnabled(true);
@@ -604,7 +604,7 @@ public class frm_mhs extends javax.swing.JFrame {
                 tabelModel.addRow(data);
                 }
                 
-                stt.close();;
+                stt.close();
                 kon.close();
             } catch (Exception ex) {
                 System.err.println(ex.getMessage());

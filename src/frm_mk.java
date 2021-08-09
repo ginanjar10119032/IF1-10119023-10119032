@@ -266,7 +266,7 @@ public class frm_mk extends javax.swing.JFrame {
                         .addComponent(btnUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                         .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -360,8 +360,8 @@ public class frm_mk extends javax.swing.JFrame {
                 data[0] = txtNomorMK.getText();
                 data[1] = txtNamaMK.getText();
                 tabelModel.insertRow(0, data);
-                stt.close();;
-                kon.close();;
+                stt.close();
+                kon.close();
                 membersihkan_text();
                 btnSimpan.setEnabled(false);
                 btnTambah.setEnabled(true);
@@ -397,9 +397,9 @@ public class frm_mk extends javax.swing.JFrame {
                 Connection kon = DriverManager.getConnection(db, user, pass);
                 Statement stt = kon.createStatement();
                 String SQL = "UPDATE mata_kuliah SET "
-                        + "nomor_mk='" + nomor_mk + "',"
-                        + "nama_mk='" + nama_mk + "'"
-                        + "WHERE nomor_mk='" + tabelModel.getValueAt(row, 0).toString() + "';";
+                + "nomor_mk='" + nomor_mk + "',"
+                + "nama_mk='" + nama_mk + "'"
+                + "WHERE nomor_mk='" + tabelModel.getValueAt(row, 0).toString() + "';";
                 stt.executeUpdate(SQL);
 
                 data[0] = nomor_mk;
@@ -424,8 +424,8 @@ public class frm_mk extends javax.swing.JFrame {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:
         int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin menghapus Data Mata Kuliah dengan Nomor MK "
-                .concat(txtNomorMK.getText()), "Konfirmasi", JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE);
+            .concat(txtNomorMK.getText()), "Konfirmasi", JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
             String nomor_mk = txtNomorMK.getText();
             String nama_mk = txtNamaMK.getText();
@@ -439,7 +439,7 @@ public class frm_mk extends javax.swing.JFrame {
                     Connection kon = DriverManager.getConnection(db, user, pass);
                     Statement stt = kon.createStatement();
                     String SQL = "DELETE from mata_kuliah "
-                            + "WHERE nomor_mk='" + tabelModel.getValueAt(row, 0).toString() + "';";
+                    + "WHERE nomor_mk='" + tabelModel.getValueAt(row, 0).toString() + "';";
                     stt.executeUpdate(SQL);
 
                     tabelModel.removeRow(row);
