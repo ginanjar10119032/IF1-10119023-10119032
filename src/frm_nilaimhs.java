@@ -1,10 +1,14 @@
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.ComboBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -14,7 +18,6 @@ import javax.swing.table.DefaultTableModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Lenovo
@@ -26,32 +29,36 @@ public class frm_nilaimhs extends javax.swing.JFrame {
      */
     model model = new model();
     private DefaultTableModel tabelModel = model.nilaiMhs;
-    
+
     koneksi setPanel;
     String driver, db, user, pass;
     String data[] = new String[5];
     int row = 0;
-    
+
     public frm_nilaimhs() {
         initComponents();
         setLocationRelativeTo(null);
+
+        txtNim.setEditable(false);
+        txtKodeMK.setEditable(false);
         
         setPanel = new koneksi();
         driver = setPanel.settingPanel("DBDriver");
         db = setPanel.settingPanel("DBDatabase");
         user = setPanel.settingPanel("DBUsername");
         pass = setPanel.settingPanel("DBPassword");
-        
+
         tabelNilaiMhs.setModel(tabelModel);
         isiBoxMhs();
-        
+        isiBoxMK();
+
     }
-    
-    public void isiBoxMhs(){
+
+    public void isiBoxMhs() {
         try {
             txtNama.removeAllItems();
-            txtNama.addItem("---Pilih Nama Mahasiswa---");
-            
+            txtNama.addItem("----- Pilih Nama Mahasiswa -----");
+
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(db, user, pass);
 
@@ -61,7 +68,32 @@ public class frm_nilaimhs extends javax.swing.JFrame {
             while (res.next()) {
                 txtNama.addItem(res.getString(1));
             }
-            
+
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+
+    public void isiBoxMK() {
+        try {
+            txtNamaMK.removeAllItems();
+            txtNamaMK.addItem("----- Pilih Nama Mata Kuliah -----");
+
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nama_mk from mata_kuliah";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                txtNamaMK.addItem(res.getString(1));
+            }
+
             res.close();
             stt.close();
             kon.close();
@@ -198,6 +230,11 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         jLabel13.setText("UAS");
 
         txtNamaMK.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtNamaMK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNamaMKActionPerformed(evt);
+            }
+        });
 
         tabelNilaiMhs.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -330,8 +367,8 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(txtTugas3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(scrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(scrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, "card2");
@@ -350,7 +387,69 @@ public class frm_nilaimhs extends javax.swing.JFrame {
 
     private void txtNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaActionPerformed
         // TODO add your handling code here:
+        txtNama.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if (!txtNama.getSelectedItem().equals("----- Pilih Nama Mahasiswa -----")) {
+                    try {
+                        Class.forName(driver);
+                        Connection kon = DriverManager.getConnection(db, user, pass);
+
+                        Statement stt = kon.createStatement();
+                        String SQL = "select nim from mahasiswa where nama='"
+                                + txtNama.getSelectedItem() + "'";
+                        ResultSet res = stt.executeQuery(SQL);
+                        if (res.next()) {
+                            txtNim.setText(res.getString(1));
+                        }
+
+                        res.close();
+                        stt.close();
+                        kon.close();
+                    } catch (Exception ex) {
+                        System.err.println(ex.getMessage());
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        System.exit(0);
+                    }
+                }else {
+                    txtNim.setText("");
+                }
+            }
+        });
     }//GEN-LAST:event_txtNamaActionPerformed
+
+    private void txtNamaMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaMKActionPerformed
+        // TODO add your handling code here:
+        txtNamaMK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if (!txtNamaMK.getSelectedItem().equals("----- Pilih Nama Mata Kuliah -----")) {
+                    try {
+                        Class.forName(driver);
+                        Connection kon = DriverManager.getConnection(db, user, pass);
+
+                        Statement stt = kon.createStatement();
+                        String SQL = "select nomor_mk from mata_kuliah where nama_mk='"
+                                + txtNamaMK.getSelectedItem() + "'";
+                        ResultSet res = stt.executeQuery(SQL);
+                        if (res.next()) {
+                            txtKodeMK.setText(res.getString(1));
+                        }
+
+                        res.close();
+                        stt.close();
+                        kon.close();
+                    } catch (Exception ex) {
+                        System.err.println(ex.getMessage());
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        System.exit(0);
+                    }
+                } else {
+                    txtKodeMK.setText("");
+                }
+            }
+        });
+    }//GEN-LAST:event_txtNamaMKActionPerformed
 
     /**
      * @param args the command line arguments
