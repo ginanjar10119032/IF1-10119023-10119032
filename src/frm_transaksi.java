@@ -119,7 +119,7 @@ public class frm_transaksi extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnHitung = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        txtTotal = new javax.swing.JLabel();
         btnTambah = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
@@ -246,10 +246,15 @@ public class frm_transaksi extends javax.swing.JFrame {
         jLabel2.setText("TOTAL HARGA :");
 
         btnHitung.setText("HITUNG");
+        btnHitung.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHitungActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("RP");
 
-        jLabel4.setText("jLabel4");
+        txtTotal.setText("jLabel4");
 
         btnTambah.setText("Masukkan Data");
 
@@ -271,7 +276,7 @@ public class frm_transaksi extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(8, 8, 8))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
@@ -297,7 +302,7 @@ public class frm_transaksi extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addGap(18, 18, 18)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnTambah)
@@ -332,15 +337,38 @@ public class frm_transaksi extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (evt.getClickCount() == 1) {
             clickTabel();
-            tabelListMakanan.changeSelection(row, 2, false, false);
             tabelListMakanan.editCellAt(row, 2);
             tabelListMakanan.getEditorComponent().requestFocus();
         }
     }//GEN-LAST:event_tabelListMakananMouseClicked
 
+    private void btnHitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHitungActionPerformed
+        // TODO add your handling code here:
+        if (tabelListMakanan.isEditing()) {
+            tabelListMakanan.getCellEditor().stopCellEditing();
+        }
+
+            int row = tabelListMakanan.getRowCount() - 1;
+            int totalHarga = 0;
+            int hargaTiapMakanan;
+            int pesanan = 0;
+            while (row >= 0) {
+                if (tabelListMakanan.getValueAt(row, 2) == null || 
+                        tabelListMakanan.getValueAt(row, 2).toString().trim().equals("")) {
+                    hargaTiapMakanan = 0;
+                } else {
+                    pesanan = Integer.valueOf(tabelListMakanan.getValueAt(row, 2).toString());
+                    hargaTiapMakanan = Integer.valueOf(tabelListMakanan.getValueAt(row, 1).toString()) * pesanan;
+                }
+                totalHarga = totalHarga + hargaTiapMakanan;
+                row = row - 1;
+            }
+            txtTotal.setText(String.valueOf(totalHarga));
+    }//GEN-LAST:event_btnHitungActionPerformed
+
     /**
-     * @param args the command line arguments
-     */
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -384,7 +412,6 @@ public class frm_transaksi extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -392,5 +419,6 @@ public class frm_transaksi extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable tabelListMakanan;
     private javax.swing.JTable tabelPesanan;
+    private javax.swing.JLabel txtTotal;
     // End of variables declaration//GEN-END:variables
 }
