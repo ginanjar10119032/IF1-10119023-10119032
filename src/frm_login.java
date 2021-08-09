@@ -158,16 +158,14 @@ public class frm_login extends javax.swing.JFrame {
             ps.setString(1, jTextField1.getText());
             ps.setString(2, String.valueOf(jPasswordField1.getPassword()));
             ResultSet result = ps.executeQuery(); 
-            int i = 0;
-            while (i < 3) {
                 if(result.next()){
                     JOptionPane.showMessageDialog(null, "Berhasil masuk");
                     frm_utama utama = new frm_utama();
                     utama.setVisible(true);
+                }             
+                else{
+                JOptionPane.showMessageDialog(null, "Nama pengguna dan password tidak ditemukan silahkan daftar");   
                 }
-                i++;              
-            }
-            JOptionPane.showMessageDialog(null, "Nama pengguna dan password tidak ditemukan silahkan daftar");            
         } catch (SQLException ex) {
             Logger.getLogger(frm_login.class.getName()).log(Level.SEVERE, null, ex);
         }
