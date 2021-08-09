@@ -80,7 +80,7 @@ public class model {
         ) {
             boolean[] canEdit = new boolean[]{
                 false, false, false, false, false, false, false,
-                 false, false, false, false, false, false, false
+                 false, false, false, false, false, false, false, false
             };
 
             @Override

@@ -186,14 +186,43 @@ public class frm_nilaimhs extends javax.swing.JFrame {
 
         row = tabelNilaiMhs.getSelectedRow();
 
-        txtNama.setSelectedItem(tabelNilaiMhs.getValueAt(row, 0).toString());
-        txtNamaMK.setSelectedItem(tabelNilaiMhs.getValueAt(row, 1).toString());
+        String nim, kodeMK;
+        nim = tabelNilaiMhs.getValueAt(row, 0).toString();
+        kodeMK = tabelNilaiMhs.getValueAt(row, 1).toString();
+
+        txtNim.setText(tabelNilaiMhs.getValueAt(row, 0).toString());
+        txtKodeMK.setText(tabelNilaiMhs.getValueAt(row, 1).toString());
         txtKehadiran.setText(tabelNilaiMhs.getValueAt(row, 2).toString());
         txtTugas1.setText(tabelNilaiMhs.getValueAt(row, 3).toString());
         txtTugas2.setText(tabelNilaiMhs.getValueAt(row, 4).toString());
         txtTugas3.setText(tabelNilaiMhs.getValueAt(row, 5).toString());
         txtUTS.setText(tabelNilaiMhs.getValueAt(row, 6).toString());
         txtUAS.setText(tabelNilaiMhs.getValueAt(row, 7).toString());
+
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nama from mahasiswa where nim = '" + nim + "'";
+            ResultSet res = stt.executeQuery(SQL);
+            res.next();
+            txtNama.setSelectedItem(res.getString(1));
+        } catch (Exception e) {
+        }
+
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nama_mk from mata_kuliah where nomor_mk = '" + kodeMK + "'";
+            ResultSet res = stt.executeQuery(SQL);
+            res.next();
+            txtNamaMK.setSelectedItem(res.getString(1));
+        } catch (Exception e) {
+        }
+
         btnTambah.setEnabled(false);
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(true);
@@ -386,6 +415,11 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelNilaiMhs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelNilaiMhsMouseClicked(evt);
+            }
+        });
         scrollpane.setViewportView(tabelNilaiMhs);
 
         btnTambah.setText("TAMBAH");
@@ -770,6 +804,13 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         btnHapus.setEnabled(false);
         btnTambah.setEnabled(true);
     }//GEN-LAST:event_btnBatalActionPerformed
+
+    private void tabelNilaiMhsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelNilaiMhsMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 1) {
+            tampil_field();
+        }
+    }//GEN-LAST:event_tabelNilaiMhsMouseClicked
 
     /**
      * @param args the command line arguments
