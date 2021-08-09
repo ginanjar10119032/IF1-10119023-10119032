@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Ginanjar Tubagus Gumilar
@@ -22,21 +21,21 @@ import javax.swing.JOptionPane;
 public class frm_login extends javax.swing.JFrame {
 
     koneksi setPanel;
-    String driver,db,user,pass;    
-    
+    String driver, db, user, pass;
+
     /**
      * Creates new form frm_login
      */
     public frm_login() {
         initComponents();
         setLocationRelativeTo(null);
-        
+
         setPanel = new koneksi();
         driver = setPanel.settingPanel("DBDriver");
         db = setPanel.settingPanel("DBDatabase");
         user = setPanel.settingPanel("DBUsername");
         pass = setPanel.settingPanel("DBPassword");
-        
+
     }
 
     /**
@@ -145,27 +144,38 @@ public class frm_login extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        frm_daftar daftar= new frm_daftar();
+        frm_daftar daftar = new frm_daftar();
         daftar.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    int clicked = 2;
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         try {
-            Connection kon = DriverManager.getConnection(db,user,pass);
-            PreparedStatement ps;
-            ps = kon.prepareStatement("SELECT `username`, `password` FROM `pengguna` WHERE `username` = ? AND `password` = ?");
-            ps.setString(1, jTextField1.getText());
-            ps.setString(2, String.valueOf(jPasswordField1.getPassword()));
-            ResultSet result = ps.executeQuery(); 
-                if(result.next()){
-                    JOptionPane.showMessageDialog(null, "Berhasil masuk");
-                    frm_utama utama = new frm_utama();
-                    utama.setVisible(true);
-                }             
-                else{
-                JOptionPane.showMessageDialog(null, "Nama pengguna dan password tidak ditemukan silahkan daftar");   
+        try {
+            if (jTextField1.getText().trim().equals("") || jPasswordField1.getText().trim().equals("")) {
+                JOptionPane.showMessageDialog(null, "Seluruh Field Harus Diisi", null, JOptionPane.WARNING_MESSAGE);
+            } else {
+                if (clicked > 0) {
+                    Connection kon = DriverManager.getConnection(db, user, pass);
+                    PreparedStatement ps;
+                    ps = kon.prepareStatement("SELECT `username`, `password` FROM `pengguna` WHERE `username` = ? AND `password` = ?");
+                    ps.setString(1, jTextField1.getText());
+                    ps.setString(2, String.valueOf(jPasswordField1.getPassword()));
+                    ResultSet result = ps.executeQuery();
+                    if (result.next()) {
+                        JOptionPane.showMessageDialog(null, "Berhasil masuk");
+                        frm_utama utama = new frm_utama();
+                        utama.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Nama pengguna dan password tidak ditemukan silahkan daftar",
+                                "Sisa Percobaan : "+clicked, JOptionPane.WARNING_MESSAGE);
+                        clicked = clicked - 1;
+                    }
+                } else {
+                    this.dispose();
                 }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(frm_login.class.getName()).log(Level.SEVERE, null, ex);
         }
