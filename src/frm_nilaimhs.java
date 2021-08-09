@@ -78,7 +78,6 @@ public class frm_nilaimhs extends javax.swing.JFrame {
             ResultSet res = stt.executeQuery(SQL);
             while (res.next()) {
                 txtNama.addItem(res.getString(1));
-                txtAngkatan.setDate(toDate(formatter.format(date)));
             }
 
             res.close();
@@ -241,6 +240,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         txtTugas3.setText("");
         txtUTS.setText("");
         txtUAS.setText("");
+        txtAngkatan.setDate(null);
     }
 
     public void nonaktif_text() {
@@ -252,6 +252,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         txtTugas3.setEnabled(false);
         txtUTS.setEnabled(false);
         txtUAS.setEnabled(false);
+        txtAngkatan.setEnabled(false);
     }
 
     public void aktif_text() {
@@ -263,6 +264,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         txtTugas3.setEnabled(true);
         txtUTS.setEnabled(true);
         txtUAS.setEnabled(true);
+        txtAngkatan.setEnabled(true);
     }
 
     /**
@@ -430,8 +432,18 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         });
 
         btnUbah.setText("UBAH");
+        btnUbah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUbahActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("HAPUS");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnSimpan.setText("SIMPAN");
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
@@ -448,6 +460,11 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         });
 
         btnKeluar.setText("KELUAR");
+        btnKeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKeluarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -632,6 +649,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                         ResultSet res = stt.executeQuery(SQL);
                         if (res.next()) {
                             txtNim.setText(res.getString(1));
+                            txtAngkatan.setDate(toDate(formatter.format(date)));
                         }
 
                         res.close();
@@ -692,7 +710,7 @@ public class frm_nilaimhs extends javax.swing.JFrame {
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
-        String data[] = new String[14];
+        String data[] = new String[15];
 
         char index;
         String kelulusan;
@@ -811,6 +829,174 @@ public class frm_nilaimhs extends javax.swing.JFrame {
             tampil_field();
         }
     }//GEN-LAST:event_tabelNilaiMhsMouseClicked
+
+    private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
+        // TODO add your handling code here:
+        String data[] = new String[15];
+
+        char index;
+        String kelulusan;
+        Double absen, tgs1, tgs2, tgs3, uts, uas, nilaiAbsen, nilaiTgs, nilaiUts, nilaiUas, na;
+        absen = Double.valueOf(txtKehadiran.getText());
+        tgs1 = Double.valueOf(txtTugas1.getText());
+        tgs2 = Double.valueOf(txtTugas2.getText());
+        tgs3 = Double.valueOf(txtTugas3.getText());
+        uts = Double.valueOf(txtUTS.getText());
+        uas = Double.valueOf(txtUAS.getText());
+
+        if ((txtKodeMK.getText().isEmpty()) || (txtNim.getText().isEmpty())
+                || txtTugas1.getText().isEmpty() || txtTugas2.getText().isEmpty()
+                || txtTugas3.getText().isEmpty() || txtUTS.getText().isEmpty()
+                || txtUAS.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+
+        } else if (absen > 14) {
+            JOptionPane.showMessageDialog(null, "Kehadiram Maksimum adalah 14 Pertemuan", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+            txtKehadiran.requestFocus();
+        } else if (tgs1 > 100 || (tgs2 > 100) || (tgs3 > 100)
+                || (uts > 100) || (uas > 100)) {
+            JOptionPane.showMessageDialog(null, "Nilai Maksimum adalah 100", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+        } else if ((tgs1 < 0) || (tgs2 < 0) || (tgs3 < 0)
+                || (uts < 0) || (uas < 0) || (absen < 0)) {
+            JOptionPane.showMessageDialog(null, "Angka Minimum adalah 0", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+        } else {
+            nilaiAbsen = ((absen / 14) * 100 * 5) / 100;
+            nilaiTgs = ((tgs1 + tgs2 + tgs3) / 3) * 0.25;
+            nilaiUts = uts * 0.3;
+            nilaiUas = uas * 0.4;
+            na = nilaiAbsen + nilaiTgs + nilaiUts + nilaiUas;
+
+            if (na >= 80) {
+                index = 'A';
+                kelulusan = "LULUS";
+            } else if (na >= 68) {
+                index = 'B';
+                kelulusan = "LULUS";
+            } else if (na >= 56) {
+                index = 'C';
+                kelulusan = "LULUS";
+            } else if (na >= 45) {
+                index = 'D';
+                kelulusan = "Tidak Lulus";
+            } else {
+                index = 'E';
+                kelulusan = "Tidak Lulus";
+            }
+
+            if (absen < 11) {
+                kelulusan = "Tidak Lulus";
+            }
+
+            try {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(db, user, pass);
+                Statement stt = kon.createStatement();
+                String SQL = "UPDATE nilai_mhs "
+                        + "SET "
+                        + "absensi='" + txtKehadiran.getText() + "', "
+                        + "tugas1='" + txtTugas1.getText() + "', "
+                        + "tugas2='" + txtTugas2.getText() + "', "
+                        + "tugas3='" + txtTugas3.getText() + "', "
+                        + "uts='" + txtUTS.getText() + "', "
+                        + "uas='" + txtUAS.getText() + "', "
+                        + "nilai_akhir='" + String.valueOf(na.intValue()) + "', "
+                        + "keterangan='" + kelulusan + "' "
+                        + "WHERE nim='" + tabelModel.getValueAt(row, 0)
+                        + "' AND nomor_mk='" + tabelModel.getValueAt(row, 1) + "'";
+                stt.executeUpdate(SQL);
+
+                data[0] = txtNama.getSelectedItem().toString();
+                data[1] = txtNamaMK.getSelectedItem().toString();
+                data[2] = txtKehadiran.getText();
+                data[3] = txtTugas1.getText();
+                data[4] = txtTugas2.getText();
+                data[5] = txtTugas3.getText();
+                data[6] = txtUTS.getText();
+                data[7] = txtUAS.getText();
+                data[8] = String.valueOf(nilaiAbsen.intValue());
+                data[9] = String.valueOf(nilaiTgs.intValue());
+                data[10] = String.valueOf(nilaiUts.intValue());
+                data[11] = String.valueOf(nilaiUas.intValue());
+                data[12] = String.valueOf(na.intValue());
+                data[13] = String.valueOf(index);
+                data[14] = kelulusan;
+
+                tabelModel.removeRow(row);
+                tabelModel.insertRow(row, data);
+                stt.close();
+                kon.close();
+                membersihkan_text();
+                btnSimpan.setEnabled(false);
+                btnUbah.setEnabled(false);
+                btnHapus.setEnabled(false);
+                btnTambah.setEnabled(true);
+                nonaktif_text();
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnUbahActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin menghapus Data Mahasiswa dengan NIM "
+                .concat(txtNim.getText()), "Konfirmasi", JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            Double absen, tgs1, tgs2, tgs3, uts, uas, nilaiAbsen, nilaiTgs, nilaiUts, nilaiUas, na;
+            absen = Double.valueOf(txtKehadiran.getText());
+            tgs1 = Double.valueOf(txtTugas1.getText());
+            tgs2 = Double.valueOf(txtTugas2.getText());
+            tgs3 = Double.valueOf(txtTugas3.getText());
+            uts = Double.valueOf(txtUTS.getText());
+            uas = Double.valueOf(txtUAS.getText());
+
+            if ((txtKodeMK.getText().isEmpty()) || (txtNim.getText().isEmpty())
+                    || txtTugas1.getText().isEmpty() || txtTugas2.getText().isEmpty()
+                    || txtTugas3.getText().isEmpty() || txtUTS.getText().isEmpty()
+                    || txtUAS.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Data tidak boleh kosong", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+
+            } else if (absen > 14) {
+                JOptionPane.showMessageDialog(null, "Kehadiram Maksimum adalah 14 Pertemuan", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+                txtKehadiran.requestFocus();
+            } else if (tgs1 > 100 || (tgs2 > 100) || (tgs3 > 100)
+                    || (uts > 100) || (uas > 100)) {
+                JOptionPane.showMessageDialog(null, "Nilai Maksimum adalah 100", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+            } else if ((tgs1 < 0) || (tgs2 < 0) || (tgs3 < 0)
+                    || (uts < 0) || (uas < 0) || (absen < 0)) {
+                JOptionPane.showMessageDialog(null, "Angka Minimum adalah 0", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+            } else {
+                try {
+                    Class.forName(driver);
+                    Connection kon = DriverManager.getConnection(db, user, pass);
+                    Statement stt = kon.createStatement();
+                    String SQL = "DELETE from nilai_mhs "
+                            + "WHERE nim='" + tabelModel.getValueAt(row, 0).toString()
+                            + "' AND nomor_mk='" + tabelModel.getValueAt(row, 1) + "'";
+                    stt.executeUpdate(SQL);
+
+                    tabelModel.removeRow(row);
+                    stt.close();
+                    kon.close();
+                    membersihkan_text();
+                    btnSimpan.setEnabled(false);
+                    btnUbah.setEnabled(false);
+                    btnHapus.setEnabled(false);
+                    btnTambah.setEnabled(true);
+                    nonaktif_text();
+                } catch (Exception ex) {
+                    System.err.println(ex.getMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnKeluarActionPerformed
 
     /**
      * @param args the command line arguments
