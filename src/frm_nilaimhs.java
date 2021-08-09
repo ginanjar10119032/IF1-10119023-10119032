@@ -118,6 +118,8 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         txtTugas1.setText(tabelNilaiMhs.getValueAt(row, 3).toString());
         txtTugas2.setText(tabelNilaiMhs.getValueAt(row, 4).toString());
         txtTugas3.setText(tabelNilaiMhs.getValueAt(row, 5).toString());
+        txtUTS.setText(tabelNilaiMhs.getValueAt(row, 6).toString());
+        txtUAS.setText(tabelNilaiMhs.getValueAt(row, 7).toString());
         btnTambah.setEnabled(false);
         btnSimpan.setEnabled(false);
         btnUbah.setEnabled(true);
