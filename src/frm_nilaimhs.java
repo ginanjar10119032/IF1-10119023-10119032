@@ -39,8 +39,6 @@ public class frm_nilaimhs extends javax.swing.JFrame {
     String data[] = new String[15];
     int row = 0;
 
-    
-
     public frm_nilaimhs() {
         initComponents();
         setLocationRelativeTo(null);
@@ -721,29 +719,33 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         char index;
         String kelulusan;
         Double absen, tgs1, tgs2, tgs3, uts, uas, nilaiAbsen, nilaiTgs, nilaiUts, nilaiUas, na;
-        absen = Double.valueOf(txtKehadiran.getText());
-        tgs1 = Double.valueOf(txtTugas1.getText());
-        tgs2 = Double.valueOf(txtTugas2.getText());
-        tgs3 = Double.valueOf(txtTugas3.getText());
-        uts = Double.valueOf(txtUTS.getText());
-        uas = Double.valueOf(txtUAS.getText());
 
-        if ((txtKodeMK.getText().isEmpty()) || (txtNim.getText().isEmpty())
-                || txtTugas1.getText().isEmpty() || txtTugas2.getText().isEmpty()
-                || txtTugas3.getText().isEmpty() || txtUTS.getText().isEmpty()
-                || txtUAS.getText().isEmpty()) {
+        if ((txtKodeMK.getText().trim().equals("")) || (txtNim.getText().trim().equals(""))
+                || txtTugas1.getText().trim().equals("") || txtTugas2.getText().trim().equals("")
+                || txtTugas3.getText().trim().equals("") || txtUTS.getText().trim().equals("")
+                || txtUAS.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong", "Peringatan!", JOptionPane.WARNING_MESSAGE);
 
-        } else if (absen > 14) {
+        } else if (Double.valueOf(txtKehadiran.getText()) > 14) {
             JOptionPane.showMessageDialog(null, "Kehadiram Maksimum adalah 14 Pertemuan", "Peringatan!", JOptionPane.WARNING_MESSAGE);
             txtKehadiran.requestFocus();
-        } else if (tgs1 > 100 || (tgs2 > 100) || (tgs3 > 100)
-                || (uts > 100) || (uas > 100)) {
+        } else if (Double.valueOf(txtTugas1.getText()) > 100 || (Double.valueOf(txtTugas2.getText()) > 100) || 
+                (Double.valueOf(txtTugas3.getText()) > 100) || (Double.valueOf(txtUTS.getText()) > 100) || 
+                (Double.valueOf(txtUAS.getText()) > 100)) {
             JOptionPane.showMessageDialog(null, "Nilai Maksimum adalah 100", "Peringatan!", JOptionPane.WARNING_MESSAGE);
-        } else if ((tgs1 < 0) || (tgs2 < 0) || (tgs3 < 0)
-                || (uts < 0) || (uas < 0) || (absen < 0)) {
+        } else if ((Double.valueOf(txtTugas1.getText()) < 0) || (Double.valueOf(txtTugas2.getText()) < 0) ||
+                (Double.valueOf(txtTugas3.getText()) < 0) || (Double.valueOf(txtUTS.getText()) < 0) || 
+                (Double.valueOf(txtUAS.getText()) < 0) || (Double.valueOf(txtKehadiran.getText()) < 0)) {
             JOptionPane.showMessageDialog(null, "Angka Minimum adalah 0", "Peringatan!", JOptionPane.WARNING_MESSAGE);
         } else {
+
+            absen = Double.valueOf(txtKehadiran.getText());
+            tgs1 = Double.valueOf(txtTugas1.getText());
+            tgs2 = Double.valueOf(txtTugas2.getText());
+            tgs3 = Double.valueOf(txtTugas3.getText());
+            uts = Double.valueOf(txtUTS.getText());
+            uas = Double.valueOf(txtUAS.getText());
+                    
             nilaiAbsen = ((absen / 14) * 100 * 5) / 100;
             nilaiTgs = ((tgs1 + tgs2 + tgs3) / 3) * 0.25;
             nilaiUts = uts * 0.3;
