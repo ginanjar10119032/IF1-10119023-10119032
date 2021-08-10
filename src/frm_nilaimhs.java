@@ -129,7 +129,9 @@ public class frm_nilaimhs extends javax.swing.JFrame {
             Connection kon = DriverManager.getConnection(db, user, pass);
 
             Statement stt = kon.createStatement();
-            String SQL = "select * from nilai_mhs";
+            String SQL = "select nama,nama_mk,absensi,tugas1,tugas2,tugas3,uts,uas,nilai_akhir,keterangan "
+                    + "from mahasiswa,mata_kuliah,nilai_mhs WHERE nilai_mhs.nim=mahasiswa.nim "
+                    + "AND nilai_mhs.nomor_mk=mata_kuliah.nomor_mk";
             ResultSet res = stt.executeQuery(SQL);
             while (res.next()) {
                 absen = Double.valueOf(res.getString(3));

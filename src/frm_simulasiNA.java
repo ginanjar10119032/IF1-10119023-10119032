@@ -41,6 +41,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         pass = setPanel.settingPanel("DBPassword");
 
         tabelSimulasiNA.setModel(tabelModel);
+        isiBoxMK();
 
 
         btnUbah.setEnabled(false);
@@ -50,6 +51,31 @@ public class frm_simulasiNA extends javax.swing.JFrame {
     
     private void setColWidth() {
         tabelSimulasiNA.getRowHeight(2);
+    }
+    
+    private void isiBoxMK() {
+        try {
+            txtNamaMK.removeAllItems();
+            txtNamaMK.addItem("----- Pilih Nama Mata Kuliah -----");
+
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nama_mk from mata_kuliah";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                txtNamaMK.addItem(res.getString(1));
+            }
+
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
     }
 
     /**
@@ -64,7 +90,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        txtNamaMK = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtPersentaseAbsen = new javax.swing.JTextField();
@@ -134,7 +160,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel2.setText("Nama Mata Kuliah");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtNamaMK.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel3.setText("Kode MK");
@@ -248,7 +274,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addGap(57, 57, 57)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNamaMK, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtKodeMK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -311,7 +337,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
                 .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNamaMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -421,7 +447,6 @@ public class frm_simulasiNA extends javax.swing.JFrame {
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnUbah;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -445,6 +470,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
     private javax.swing.JTable tabelSimulasiNA;
     private javax.swing.JTextField txtKehadiran;
     private javax.swing.JTextField txtKodeMK;
+    private javax.swing.JComboBox<String> txtNamaMK;
     private javax.swing.JTextField txtPersentaseAbsen;
     private javax.swing.JTextField txtPersentaseTugas;
     private javax.swing.JTextField txtPersentaseUAS;

@@ -60,7 +60,7 @@
                       </Group>
                       <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jComboBox1" min="-2" pref="152" max="-2" attributes="0"/>
+                          <Component id="txtNamaMK" min="-2" pref="152" max="-2" attributes="0"/>
                           <Component id="txtKodeMK" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -142,7 +142,7 @@
               <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtNamaMK" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -258,7 +258,7 @@
         <Property name="text" type="java.lang.String" value="Nama Mata Kuliah"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox1">
+    <Component class="javax.swing.JComboBox" name="txtNamaMK">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
