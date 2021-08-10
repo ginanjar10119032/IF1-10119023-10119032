@@ -671,30 +671,36 @@ public class frm_transaksi extends javax.swing.JFrame {
 
     private void btnSelesaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelesaiActionPerformed
         // TODO add your handling code here:
-        try {
-            Class.forName(driver);
-            Connection kon = DriverManager.getConnection(db, user, pass);
+        int confirm = JOptionPane.showConfirmDialog(null, "Yakin Pesanan ini Sudah Dengan No. Meja  "
+                .concat(txtNoMeja.getText()).concat(" Sudah Selesai?"), "Konfirmasi", JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(db, user, pass);
 
-            Statement stt = kon.createStatement();
-            String SQL = "DELETE from pesanan_total_harga WHERE no_meja='"
-                    + tabelPesanan.getValueAt(rowPesanan, 0) + "'";
-            stt.executeUpdate(SQL);
-            
-            tabelModel2.removeRow(rowPesanan);
-            
-            stt.close();
-            kon.close();
-            
-            membersihkan_teks();
-            nonaktif_teks();
-            btnSelesai.setEnabled(false);
-            btnUbah.setEnabled(false);
-            
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-        }
+                Statement stt = kon.createStatement();
+                String SQL = "DELETE from pesanan_total_harga WHERE no_meja='"
+                        + tabelPesanan.getValueAt(rowPesanan, 0) + "'";
+                stt.executeUpdate(SQL);
+
+                tabelModel2.removeRow(rowPesanan);
+
+                stt.close();
+                kon.close();
+
+                membersihkan_teks();
+                nonaktif_teks();
+                btnSelesai.setEnabled(false);
+                btnUbah.setEnabled(false);
+
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
+            }
+        } 
+
     }//GEN-LAST:event_btnSelesaiActionPerformed
 
     /**
