@@ -180,6 +180,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtPencarian">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPencarianKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator2">
         </Component>

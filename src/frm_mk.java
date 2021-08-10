@@ -169,6 +169,12 @@ public class frm_mk extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel3.setText("Masukkan Data");
 
+        txtPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPencarianKeyReleased(evt);
+            }
+        });
+
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel4.setText("Nomor M.K.");
 
@@ -458,6 +464,36 @@ public class frm_mk extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void txtPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPencarianKeyReleased
+        // TODO add your handling code here:
+        String kode_mk = txtPencarian.getText();
+
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+            Statement stt = kon.createStatement();
+            String SQL = "SELECT * from mata_kuliah "
+                    + "WHERE nomor_mk LIKE '" + kode_mk + "%';";
+            ResultSet res = stt.executeQuery(SQL);
+
+            int countRow = tabelModel.getRowCount();
+            for (int i = countRow - 1; i >= 0; i--) {
+                tabelModel.removeRow(i);
+            }
+
+            while (res.next()) {
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                tabelModel.addRow(data);
+            }
+
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_txtPencarianKeyReleased
 
     /**
      * @param args the command line arguments
