@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.TableView;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,7 +32,8 @@ public class frm_transaksi extends javax.swing.JFrame {
     int banyakMakananDipesan;
     String dataPesanan[];
     int jumlahPesanan[];
-    int row = 0;
+    int rowListMakanan = 0;
+    int rowPesanan = 0;
 
     /**
      * Creates new form frm_transaksi
@@ -47,16 +50,31 @@ public class frm_transaksi extends javax.swing.JFrame {
         tabelListMakanan.setModel(tabelModel);
         tabelPesanan.setModel(tabelModel2);
 
+        alignmentTableColumn();
+
         isiTabelListMakanan();
         isiTabelPesanan();
-        tabelListMakanan.changeSelection(row, 2, false, false);
-        tabelListMakanan.editCellAt(row, 2);
+        tabelListMakanan.changeSelection(rowListMakanan, 2, false, false);
+        tabelListMakanan.editCellAt(rowListMakanan, 2);
         tabelListMakanan.getEditorComponent().requestFocus();
 
-        setColWidth();
+        setColWidthModel1();
         btnUbah.setEnabled(false);
-        btnHapus.setEnabled(false);
+        btnSelesai.setEnabled(false);
         btnSimpan.setEnabled(false);
+    }
+    
+    private void alignmentTableColumn(){
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        tabelPesanan.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tabelPesanan.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        tabelListMakanan.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        tabelListMakanan.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
+        tabelPesanan.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
     }
 
     private void isiTabelListMakanan() {
@@ -84,8 +102,8 @@ public class frm_transaksi extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-    
-    private void isiTabelPesanan(){
+
+    private void isiTabelPesanan() {
         String stat = "";
         try {
 
@@ -110,17 +128,32 @@ public class frm_transaksi extends javax.swing.JFrame {
             System.exit(0);
         }
     }
+    
+    private void setColWidthModel1() {
+        tabelPesanan.getColumnModel().getColumn(0).setPreferredWidth(70);
+        tabelPesanan.getColumnModel().getColumn(0).setMaxWidth(70);
+        tabelPesanan.getColumnModel().getColumn(0).setMinWidth(70);
 
-    private void clickTabel() {
-        row = tabelListMakanan.getSelectedRow();
+        tabelPesanan.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tabelPesanan.getColumnModel().getColumn(2).setMaxWidth(150);
+        tabelPesanan.getColumnModel().getColumn(2).setMinWidth(150);
     }
 
-    private void setColWidth() {
-        tabelPesanan.getColumnModel().getColumn(0).setPreferredWidth(80);
-        tabelPesanan.getColumnModel().getColumn(0).setMaxWidth(80);
-        tabelPesanan.getColumnModel().getColumn(0).setMinWidth(80);
+    private void membersihkan_teks(){
+        int i = tabelListMakanan.getRowCount();
+        if (tabelListMakanan.isEditing()) {
+            tabelListMakanan.getCellEditor().stopCellEditing();
+        }
+        while (i > 0) {            
+            tabelModel.setValueAt("",i-1 , 2);
+            i = i - 1;
+        }
+        txtNoMeja.setText("");
+        btnSimpan.setEnabled(false);
+        btnSelesai.setEnabled(false);
+        btnUbah.setEnabled(false);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -138,7 +171,7 @@ public class frm_transaksi extends javax.swing.JFrame {
         tabelListMakanan = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         btnUbah = new javax.swing.JButton();
-        btnHapus = new javax.swing.JButton();
+        btnSelesai = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
         btnKeluar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -192,6 +225,11 @@ public class frm_transaksi extends javax.swing.JFrame {
             }
         ));
         tabelPesanan.getTableHeader().setReorderingAllowed(false);
+        tabelPesanan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelPesananMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelPesanan);
 
         tabelListMakanan.setModel(new javax.swing.table.DefaultTableModel(
@@ -222,7 +260,7 @@ public class frm_transaksi extends javax.swing.JFrame {
             }
         });
 
-        btnHapus.setText("Hapus");
+        btnSelesai.setText("Selesai");
 
         btnBatal.setText("Batal");
         btnBatal.addActionListener(new java.awt.event.ActionListener() {
@@ -247,20 +285,20 @@ public class frm_transaksi extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                     .addComponent(btnUbah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnHapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSelesai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnBatal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(179, Short.MAX_VALUE)
-                .addComponent(btnUbah)
+                .addGap(27, 27, 27)
+                .addComponent(btnUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnHapus)
-                .addGap(59, 59, 59)
-                .addComponent(btnBatal)
-                .addGap(156, 156, 156)
+                .addComponent(btnSelesai, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
+                .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
@@ -299,7 +337,7 @@ public class frm_transaksi extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                            .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -356,6 +394,7 @@ public class frm_transaksi extends javax.swing.JFrame {
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         // TODO add your handling code here:
+        membersihkan_teks();
     }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
@@ -371,8 +410,8 @@ public class frm_transaksi extends javax.swing.JFrame {
     private void tabelListMakananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelListMakananMouseClicked
         // TODO add your handling code here:
         if (evt.getClickCount() == 1) {
-            clickTabel();
-            tabelListMakanan.editCellAt(row, 2);
+            rowListMakanan = tabelListMakanan.getSelectedRow();
+            tabelListMakanan.editCellAt(rowListMakanan, 2);
             tabelListMakanan.getEditorComponent().requestFocus();
         }
     }//GEN-LAST:event_tabelListMakananMouseClicked
@@ -453,12 +492,19 @@ public class frm_transaksi extends javax.swing.JFrame {
             tabelModel2.insertRow(tabelModel2.getRowCount(), data);
             stt.close();
             kon.close();
-            btnSimpan.setEnabled(false);
+            membersihkan_teks();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void tabelPesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPesananMouseClicked
+        // TODO add your handling code here:
+        rowPesanan = tabelPesanan.getSelectedRow();
+        btnUbah.setEnabled(true);
+        btnSelesai.setEnabled(true);
+    }//GEN-LAST:event_tabelPesananMouseClicked
 
     /**
      * @param args the command line arguments
@@ -497,9 +543,9 @@ public class frm_transaksi extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
-    private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnHitung;
     private javax.swing.JButton btnKeluar;
+    private javax.swing.JButton btnSelesai;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnUbah;
     private javax.swing.JLabel jLabel1;

@@ -96,7 +96,7 @@ public class model {
         return new DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Nomor Meja", "Daftar Pesanan", "Total Harga"
+                    "No. Meja", "Daftar Pesanan", "Total Harga"
                 }
         ) {
             boolean[] canEdit = new boolean[]{

@@ -34,7 +34,7 @@
                   <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="btnSimpan" alignment="1" pref="201" max="32767" attributes="0"/>
+                          <Component id="btnSimpan" alignment="1" pref="233" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -158,6 +158,9 @@
               <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tabelPesananMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -221,7 +224,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="btnKeluar" pref="121" max="32767" attributes="0"/>
                       <Component id="btnUbah" max="32767" attributes="0"/>
-                      <Component id="btnHapus" max="32767" attributes="0"/>
+                      <Component id="btnSelesai" max="32767" attributes="0"/>
                       <Component id="btnBatal" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -231,13 +234,13 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace pref="179" max="32767" attributes="0"/>
-                  <Component id="btnUbah" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                  <Component id="btnUbah" min="-2" pref="47" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="btnHapus" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
-                  <Component id="btnBatal" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="156" max="-2" attributes="0"/>
+                  <Component id="btnSelesai" min="-2" pref="49" max="-2" attributes="0"/>
+                  <EmptySpace pref="273" max="32767" attributes="0"/>
+                  <Component id="btnBatal" min="-2" pref="49" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnKeluar" min="-2" pref="54" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               </Group>
@@ -253,9 +256,9 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUbahActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnHapus">
+        <Component class="javax.swing.JButton" name="btnSelesai">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Hapus"/>
+            <Property name="text" type="java.lang.String" value="Selesai"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnBatal">
