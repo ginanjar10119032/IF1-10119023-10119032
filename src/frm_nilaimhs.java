@@ -192,38 +192,14 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         nim = tabelNilaiMhs.getValueAt(row, 0).toString();
         kodeMK = tabelNilaiMhs.getValueAt(row, 1).toString();
 
-        txtNim.setText(tabelNilaiMhs.getValueAt(row, 0).toString());
-        txtKodeMK.setText(tabelNilaiMhs.getValueAt(row, 1).toString());
+        txtNama.setSelectedItem(tabelNilaiMhs.getValueAt(row, 0).toString());
+        txtNamaMK.setSelectedItem(tabelNilaiMhs.getValueAt(row, 1).toString());
         txtKehadiran.setText(tabelNilaiMhs.getValueAt(row, 2).toString());
         txtTugas1.setText(tabelNilaiMhs.getValueAt(row, 3).toString());
         txtTugas2.setText(tabelNilaiMhs.getValueAt(row, 4).toString());
         txtTugas3.setText(tabelNilaiMhs.getValueAt(row, 5).toString());
         txtUTS.setText(tabelNilaiMhs.getValueAt(row, 6).toString());
         txtUAS.setText(tabelNilaiMhs.getValueAt(row, 7).toString());
-
-        try {
-            Class.forName(driver);
-            Connection kon = DriverManager.getConnection(db, user, pass);
-
-            Statement stt = kon.createStatement();
-            String SQL = "select nama from mahasiswa where nim = '" + nim + "'";
-            ResultSet res = stt.executeQuery(SQL);
-            res.next();
-            txtNama.setSelectedItem(res.getString(1));
-        } catch (Exception e) {
-        }
-
-        try {
-            Class.forName(driver);
-            Connection kon = DriverManager.getConnection(db, user, pass);
-
-            Statement stt = kon.createStatement();
-            String SQL = "select nama_mk from mata_kuliah where nomor_mk = '" + kodeMK + "'";
-            ResultSet res = stt.executeQuery(SQL);
-            res.next();
-            txtNamaMK.setSelectedItem(res.getString(1));
-        } catch (Exception e) {
-        }
 
         btnTambah.setEnabled(false);
         btnSimpan.setEnabled(false);
