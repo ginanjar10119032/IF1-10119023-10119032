@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 10, 2021 at 04:04 AM
+-- Generation Time: Aug 10, 2021 at 10:32 AM
 -- Server version: 10.4.17-MariaDB
--- PHP Version: 8.0.0
+-- PHP Version: 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -95,6 +95,16 @@ CREATE TABLE `mata_kuliah` (
   `nama_mk` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `mata_kuliah`
+--
+
+INSERT INTO `mata_kuliah` (`nomor_mk`, `nama_mk`) VALUES
+(1001, 'Basis Data 2'),
+(1002, 'Rekayasa Perangkat Lunak'),
+(1003, 'Sistem Informasi'),
+(1004, 'Sistem Operasi');
+
 -- --------------------------------------------------------
 
 --
@@ -113,6 +123,16 @@ CREATE TABLE `nilai_mhs` (
   `nilai_akhir` int(3) DEFAULT NULL,
   `keterangan` enum('LULUS','Tidak Lulus') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `nilai_mhs`
+--
+
+INSERT INTO `nilai_mhs` (`nim`, `nomor_mk`, `absensi`, `tugas1`, `tugas2`, `tugas3`, `uts`, `uas`, `nilai_akhir`, `keterangan`) VALUES
+(10110001, 1001, 13, 80, 70, 90, 80, 90, 84, 'LULUS'),
+(10110002, 1003, 12, 70, 70, 80, 80, 70, 74, 'LULUS'),
+(10110003, 1002, 14, 90, 90, 80, 90, 80, 85, 'LULUS'),
+(10110004, 1001, 10, 60, 60, 70, 60, 70, 65, 'Tidak Lulus');
 
 -- --------------------------------------------------------
 
@@ -144,6 +164,16 @@ CREATE TABLE `pesanan` (
   `jumlah` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `pesanan`
+--
+
+INSERT INTO `pesanan` (`no_meja`, `daftar_pesanan`, `jumlah`) VALUES
+(7, 'Caramel Macchiato', 2),
+(7, 'Lemon Tea', 3),
+(8, 'Lemon Tea', 3),
+(8, 'Mie Goreng', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -154,6 +184,14 @@ CREATE TABLE `pesanan_total_harga` (
   `no_meja` int(5) NOT NULL,
   `total_harga` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pesanan_total_harga`
+--
+
+INSERT INTO `pesanan_total_harga` (`no_meja`, `total_harga`) VALUES
+(7, 101000),
+(8, 63000);
 
 --
 -- Indexes for dumped tables
