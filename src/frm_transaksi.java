@@ -54,23 +54,21 @@ public class frm_transaksi extends javax.swing.JFrame {
 
         isiTabelListMakanan();
         isiTabelPesanan();
-        tabelListMakanan.changeSelection(rowListMakanan, 2, false, false);
-        tabelListMakanan.editCellAt(rowListMakanan, 2);
-        tabelListMakanan.getEditorComponent().requestFocus();
+        txtNoMeja.requestFocus();
 
         setColWidthModel1();
         btnUbah.setEnabled(false);
         btnSelesai.setEnabled(false);
         btnSimpan.setEnabled(false);
     }
-    
-    private void alignmentTableColumn(){
+
+    private void alignmentTableColumn() {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         tabelPesanan.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         tabelPesanan.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
         tabelListMakanan.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-        
+
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
         tabelListMakanan.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
@@ -115,7 +113,7 @@ public class frm_transaksi extends javax.swing.JFrame {
             ResultSet res = stt.executeQuery(SQL);
             while (res.next()) {
                 dataHargaTotal[0] = res.getString(1);
-                dataHargaTotal[1] = "---Klik untuk melihat list pesanan---";
+                dataHargaTotal[1] = "---Klik 2x untuk melihat list pesanan---";
                 dataHargaTotal[2] = res.getString(2);
                 tabelModel2.addRow(dataHargaTotal);
             }
@@ -128,7 +126,7 @@ public class frm_transaksi extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-    
+
     private void setColWidthModel1() {
         tabelPesanan.getColumnModel().getColumn(0).setPreferredWidth(70);
         tabelPesanan.getColumnModel().getColumn(0).setMaxWidth(70);
@@ -139,21 +137,24 @@ public class frm_transaksi extends javax.swing.JFrame {
         tabelPesanan.getColumnModel().getColumn(2).setMinWidth(150);
     }
 
-    private void membersihkan_teks(){
+    private void membersihkan_teks() {
         int i = tabelListMakanan.getRowCount();
         if (tabelListMakanan.isEditing()) {
             tabelListMakanan.getCellEditor().stopCellEditing();
         }
-        while (i > 0) {            
-            tabelModel.setValueAt("",i-1 , 2);
+        while (i > 0) {
+            tabelModel.setValueAt("", i - 1, 2);
             i = i - 1;
         }
+        tabelListMakanan.clearSelection();
+        tabelPesanan.clearSelection();
         txtNoMeja.setText("");
+        txtTotal.setText("");
         btnSimpan.setEnabled(false);
         btnSelesai.setEnabled(false);
         btnUbah.setEnabled(false);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -487,7 +488,7 @@ public class frm_transaksi extends javax.swing.JFrame {
             }
 
             data[0] = txtNoMeja.getText();
-            data[1] = "---Klik untuk melihat list pesanan---";
+            data[1] = "---Klik 2x untuk melihat list pesanan---";
             data[2] = txtTotal.getText();
             tabelModel2.insertRow(tabelModel2.getRowCount(), data);
             stt.close();
@@ -504,6 +505,38 @@ public class frm_transaksi extends javax.swing.JFrame {
         rowPesanan = tabelPesanan.getSelectedRow();
         btnUbah.setEnabled(true);
         btnSelesai.setEnabled(true);
+        if (evt.getClickCount() == 2) {
+            try {
+                int i = tabelListMakanan.getRowCount();
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(db, user, pass);
+
+                Statement stt = kon.createStatement();
+                String SQL = "select * from pesanan WHERE no_meja='"
+                        + tabelPesanan.getValueAt(rowPesanan, 0) + "'";
+                ResultSet res = stt.executeQuery(SQL);
+                while (res.next()) {
+                    int j = 0;
+                    while (j < i) {
+                        if (tabelListMakanan.getValueAt(j, 0).toString().equals(res.getString(2))) {
+                            tabelListMakanan.setValueAt(res.getString(3), j, 2);
+                            j = j + 1;
+                        } else {
+                            j = j + 1;
+                        }
+                    }
+                }
+                txtNoMeja.setText(tabelPesanan.getValueAt(rowPesanan, 0).toString());
+                txtTotal.setText(tabelPesanan.getValueAt(rowPesanan, 2).toString());
+                res.close();
+                stt.close();
+                kon.close();
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
+            }
+        }
     }//GEN-LAST:event_tabelPesananMouseClicked
 
     /**
