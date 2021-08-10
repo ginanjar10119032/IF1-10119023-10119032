@@ -51,10 +51,10 @@ public class frm_transaksi extends javax.swing.JFrame {
         tabelPesanan.setModel(tabelModel2);
 
         alignmentTableColumn();
+        nonaktif_teks();
 
         isiTabelListMakanan();
         isiTabelPesanan();
-        txtNoMeja.requestFocus();
 
         setColWidthModel1();
         btnUbah.setEnabled(false);
@@ -155,6 +155,16 @@ public class frm_transaksi extends javax.swing.JFrame {
         btnUbah.setEnabled(false);
     }
 
+    private void nonaktif_teks() {
+        tabelListMakanan.enable(false);
+        txtNoMeja.setEnabled(false);
+    }
+
+    private void aktif_teks() {
+        tabelListMakanan.enable(true);
+        txtNoMeja.setEnabled(true);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -175,6 +185,7 @@ public class frm_transaksi extends javax.swing.JFrame {
         btnSelesai = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
         btnKeluar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         btnHitung = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -262,6 +273,11 @@ public class frm_transaksi extends javax.swing.JFrame {
         });
 
         btnSelesai.setText("Selesai");
+        btnSelesai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelesaiActionPerformed(evt);
+            }
+        });
 
         btnBatal.setText("Batal");
         btnBatal.addActionListener(new java.awt.event.ActionListener() {
@@ -277,6 +293,13 @@ public class frm_transaksi extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Tambah");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -284,6 +307,7 @@ public class frm_transaksi extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                     .addComponent(btnUbah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSelesai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -293,11 +317,13 @@ public class frm_transaksi extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addContainerGap()
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSelesai, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
                 .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -400,7 +426,88 @@ public class frm_transaksi extends javax.swing.JFrame {
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         // TODO add your handling code here:
+        try {
+            if (txtNoMeja.getText().trim().equals("")) {
+                JOptionPane.showMessageDialog(null, "Harap isi Nomor Meja", null, JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                if (tabelListMakanan.isEditing()) {
+                    tabelListMakanan.getCellEditor().stopCellEditing();
+                }
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(db, user, pass);
 
+                Statement stt = kon.createStatement();
+                String SQL = "DELETE from pesanan WHERE no_meja='"
+                        + tabelPesanan.getValueAt(rowPesanan, 0) + "'";
+                stt.executeUpdate(SQL);
+
+                int row = tabelListMakanan.getRowCount() - 1;
+                int totalHarga = 0;
+                int hargaTiapMakanan;
+                int i = 0;
+                while (row >= 0) {
+                    if (tabelListMakanan.getValueAt(row, 2) == null
+                            || tabelListMakanan.getValueAt(row, 2).toString().trim().equals("")) {
+                        hargaTiapMakanan = 0;
+                    } else {
+                        i = i + 1;
+                        banyakMakananDipesan = i;
+                        hargaTiapMakanan = Integer.valueOf(tabelListMakanan.getValueAt(row, 1).toString())
+                                * Integer.valueOf(tabelListMakanan.getValueAt(row, 2).toString());
+                    }
+                    totalHarga = totalHarga + hargaTiapMakanan;
+                    row = row - 1;
+                }
+                SQL = "UPDATE pesanan_total_harga SET no_meja='"
+                        + txtNoMeja.getText() + "', total_harga='"
+                        + totalHarga + "' WHERE no_meja='"
+                        + tabelPesanan.getValueAt(rowPesanan, 0) + "'";
+                stt.executeUpdate(SQL);
+                dataPesanan = new String[i];
+                jumlahPesanan = new int[i];
+                row = tabelListMakanan.getRowCount() - 1;
+                i = 0;
+                int j = 0;
+                while (j <= row) {
+                    if (tabelListMakanan.getValueAt(j, 2) == null
+                            || tabelListMakanan.getValueAt(j, 2).toString().trim().equals("")) {
+                    } else {
+                        i = i + 1;
+                        dataPesanan[i - 1] = tabelListMakanan.getValueAt(j, 0).toString();
+                        jumlahPesanan[i - 1] = Integer.valueOf(tabelListMakanan.getValueAt(j, 2).toString());
+                    }
+                    j = j + 1;
+                }
+
+                String data[] = new String[3];
+                i = banyakMakananDipesan;
+                j = 0;
+                while (j < i) {
+                    SQL = "INSERT INTO pesanan VALUES('"
+                            + txtNoMeja.getText() + "','"
+                            + dataPesanan[j] + "','"
+                            + jumlahPesanan[j] + "')";
+                    stt.executeUpdate(SQL);
+                    j = j + 1;
+                }
+                tabelModel2.removeRow(rowPesanan);
+                data[0] = txtNoMeja.getText();
+                data[1] = "---Klik 2x untuk melihat list pesanan---";
+                data[2] = String.valueOf(totalHarga);
+                tabelModel2.insertRow(tabelModel2.getRowCount(), data);
+                stt.close();
+                kon.close();
+                membersihkan_teks();
+                nonaktif_teks();
+                btnUbah.setEnabled(false);
+                btnSelesai.setEnabled(false);
+            }
+
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
@@ -410,10 +517,13 @@ public class frm_transaksi extends javax.swing.JFrame {
 
     private void tabelListMakananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelListMakananMouseClicked
         // TODO add your handling code here:
-        if (evt.getClickCount() == 1) {
-            rowListMakanan = tabelListMakanan.getSelectedRow();
-            tabelListMakanan.editCellAt(rowListMakanan, 2);
-            tabelListMakanan.getEditorComponent().requestFocus();
+        if (tabelListMakanan.isEnabled()) {
+            if (evt.getClickCount() == 1) {
+                rowListMakanan = tabelListMakanan.getSelectedRow();
+                tabelListMakanan.editCellAt(rowListMakanan, 2);
+                tabelListMakanan.getEditorComponent().requestFocus();
+            }
+
         }
     }//GEN-LAST:event_tabelListMakananMouseClicked
 
@@ -459,62 +569,76 @@ public class frm_transaksi extends javax.swing.JFrame {
                 j = j + 1;
             }
             txtTotal.setText(String.valueOf(totalHarga));
-            btnSimpan.setEnabled(true);
         }
     }//GEN-LAST:event_btnHitungActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
-        String data[] = new String[3];
-        int i = banyakMakananDipesan;
-        int j = 0;
-        try {
-            Class.forName(driver);
-            Connection kon = DriverManager.getConnection(db, user, pass);
-            Statement stt = kon.createStatement();
-            String SQL = "INSERT INTO pesanan_total_harga "
-                    + "VALUES "
-                    + "('" + txtNoMeja.getText() + "','"
-                    + txtTotal.getText() + "')";
-            stt.executeUpdate(SQL);
-
-            while (j < i) {
-                SQL = "INSERT INTO pesanan VALUES('"
-                        + txtNoMeja.getText() + "','"
-                        + dataPesanan[j] + "','"
-                        + jumlahPesanan[j] + "')";
+        if (txtNoMeja.getText().trim().equals("") || txtTotal.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Jika Sudah Mengisi Pesanan, Mohon Klik Tombol Hitung Sebelum Memasukkan Data",
+                    null, JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            String data[] = new String[3];
+            int i = banyakMakananDipesan;
+            int j = 0;
+            try {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(db, user, pass);
+                Statement stt = kon.createStatement();
+                String SQL = "INSERT INTO pesanan_total_harga "
+                        + "VALUES "
+                        + "('" + txtNoMeja.getText() + "','"
+                        + txtTotal.getText() + "')";
                 stt.executeUpdate(SQL);
-                j = j + 1;
-            }
 
-            data[0] = txtNoMeja.getText();
-            data[1] = "---Klik 2x untuk melihat list pesanan---";
-            data[2] = txtTotal.getText();
-            tabelModel2.insertRow(tabelModel2.getRowCount(), data);
-            stt.close();
-            kon.close();
-            membersihkan_teks();
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                while (j < i) {
+                    SQL = "INSERT INTO pesanan VALUES('"
+                            + txtNoMeja.getText() + "','"
+                            + dataPesanan[j] + "','"
+                            + jumlahPesanan[j] + "')";
+                    stt.executeUpdate(SQL);
+                    j = j + 1;
+                }
+
+                data[0] = txtNoMeja.getText();
+                data[1] = "---Klik 2x untuk melihat list pesanan---";
+                data[2] = txtTotal.getText();
+                tabelModel2.insertRow(tabelModel2.getRowCount(), data);
+                stt.close();
+                kon.close();
+                membersihkan_teks();
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
+
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void tabelPesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPesananMouseClicked
         // TODO add your handling code here:
         rowPesanan = tabelPesanan.getSelectedRow();
-        btnUbah.setEnabled(true);
-        btnSelesai.setEnabled(true);
         if (evt.getClickCount() == 2) {
+            tabelListMakanan.editCellAt(0, 2);
+            membersihkan_teks();
+            aktif_teks();
+            btnUbah.setEnabled(true);
+            btnSelesai.setEnabled(true);
             try {
                 int i = tabelListMakanan.getRowCount();
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(db, user, pass);
 
                 Statement stt = kon.createStatement();
-                String SQL = "select * from pesanan WHERE no_meja='"
+                String SQL = "select COUNT(*) from pesanan WHERE no_meja='"
                         + tabelPesanan.getValueAt(rowPesanan, 0) + "'";
                 ResultSet res = stt.executeQuery(SQL);
+                res.next();
+                banyakMakananDipesan = res.getInt(1);
+
+                SQL = "select * from pesanan WHERE no_meja='"
+                        + tabelPesanan.getValueAt(rowPesanan, 0) + "'";
+                res = stt.executeQuery(SQL);
                 while (res.next()) {
                     int j = 0;
                     while (j < i) {
@@ -538,6 +662,40 @@ public class frm_transaksi extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tabelPesananMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        aktif_teks();
+        btnSimpan.setEnabled(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnSelesaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelesaiActionPerformed
+        // TODO add your handling code here:
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "DELETE from pesanan_total_harga WHERE no_meja='"
+                    + tabelPesanan.getValueAt(rowPesanan, 0) + "'";
+            stt.executeUpdate(SQL);
+            
+            tabelModel2.removeRow(rowPesanan);
+            
+            stt.close();
+            kon.close();
+            
+            membersihkan_teks();
+            nonaktif_teks();
+            btnSelesai.setEnabled(false);
+            btnUbah.setEnabled(false);
+            
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }//GEN-LAST:event_btnSelesaiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -581,6 +739,7 @@ public class frm_transaksi extends javax.swing.JFrame {
     private javax.swing.JButton btnSelesai;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnUbah;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

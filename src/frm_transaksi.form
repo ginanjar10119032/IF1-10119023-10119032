@@ -219,9 +219,10 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jButton1" max="32767" attributes="0"/>
                       <Component id="btnKeluar" pref="121" max="32767" attributes="0"/>
                       <Component id="btnUbah" max="32767" attributes="0"/>
                       <Component id="btnSelesai" max="32767" attributes="0"/>
@@ -234,11 +235,13 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jButton1" min="-2" pref="47" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnUbah" min="-2" pref="47" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnSelesai" min="-2" pref="49" max="-2" attributes="0"/>
-                  <EmptySpace pref="273" max="32767" attributes="0"/>
+                  <EmptySpace pref="224" max="32767" attributes="0"/>
                   <Component id="btnBatal" min="-2" pref="49" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnKeluar" min="-2" pref="54" max="-2" attributes="0"/>
@@ -260,6 +263,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Selesai"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelesaiActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnBatal">
           <Properties>
@@ -275,6 +281,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnKeluarActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Tambah"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
