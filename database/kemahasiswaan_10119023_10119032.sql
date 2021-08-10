@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 10, 2021 at 10:32 AM
+-- Generation Time: Aug 10, 2021 at 01:55 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.15
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `dbprovistubes`
+-- Database: `kemahasiswaan_10119023_10119032`
 --
 
 -- --------------------------------------------------------
