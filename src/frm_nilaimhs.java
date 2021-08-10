@@ -361,6 +361,11 @@ public class frm_nilaimhs extends javax.swing.JFrame {
                 txtPencarianActionPerformed(evt);
             }
         });
+        txtPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPencarianKeyReleased(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel4.setText("Nama");
@@ -1005,6 +1010,78 @@ public class frm_nilaimhs extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnKeluarActionPerformed
+
+    private void txtPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPencarianKeyReleased
+        // TODO add your handling code here:
+        String nim = txtPencarian.getText();
+        char index;
+        String kelulusan;
+        Double absen, tgs1, tgs2, tgs3, uts, uas, nilaiAbsen, nilaiTgs, nilaiUts, nilaiUas, na;
+        
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+            Statement stt = kon.createStatement();
+            String SQL = "select nama,nama_mk,absensi,tugas1,tugas2,tugas3,uts,uas,nilai_akhir,keterangan "
+                    + "from mahasiswa,mata_kuliah,nilai_mhs WHERE nilai_mhs.nim=mahasiswa.nim "
+                    + "AND nilai_mhs.nomor_mk=mata_kuliah.nomor_mk AND mahasiswa.nim LIKE '"
+                    + nim + "%'";
+            ResultSet res = stt.executeQuery(SQL);
+
+            int countRow = tabelModel.getRowCount();
+            for (int i = countRow - 1; i >= 0; i--) {
+                tabelModel.removeRow(i);
+            }
+
+            while (res.next()) {
+                absen = Double.valueOf(res.getString(3));
+                tgs1 = Double.valueOf(res.getString(4));
+                tgs2 = Double.valueOf(res.getString(5));
+                tgs3 = Double.valueOf(res.getString(6));
+                uts = Double.valueOf(res.getString(7));
+                uas = Double.valueOf(res.getString(8));
+
+                nilaiAbsen = ((absen / 14) * 100 * 5) / 100;
+                nilaiTgs = ((tgs1 + tgs2 + tgs3) / 3) * 0.25;
+                nilaiUts = uts * 0.3;
+                nilaiUas = uas * 0.4;
+
+                if (res.getInt(9) >= 80) {
+                    index = 'A';
+                } else if (res.getInt(9) >= 68) {
+                    index = 'B';
+                } else if (res.getInt(9) >= 56) {
+                    index = 'C';
+                } else if (res.getInt(9) >= 45) {
+                    index = 'D';
+                } else {
+                    index = 'E';
+                }
+                
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                data[3] = res.getString(4);
+                data[4] = res.getString(5);
+                data[5] = res.getString(6);
+                data[6] = res.getString(7);
+                data[7] = res.getString(8);
+                data[8] = String.valueOf(nilaiAbsen.intValue());
+                data[9] = String.valueOf(nilaiTgs.intValue());
+                data[10] = String.valueOf(nilaiUts.intValue());
+                data[11] = String.valueOf(nilaiUas.intValue());
+                data[12] = res.getString(9);
+                data[13] = String.valueOf(index);
+                data[14] = res.getString(10);
+                tabelModel.addRow(data);
+            }
+
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_txtPencarianKeyReleased
 
     /**
      * @param args the command line arguments

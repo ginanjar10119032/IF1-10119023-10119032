@@ -224,6 +224,9 @@ public class frm_mhs extends javax.swing.JFrame {
         jLabel6.setText("Tempat Lahir");
 
         txtPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPencarianKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtPencarianKeyTyped(evt);
             }
@@ -580,36 +583,7 @@ public class frm_mhs extends javax.swing.JFrame {
 
     private void txtPencarianKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPencarianKeyTyped
         // TODO add your handling code here:
-        /*String nim = txtPencarian.getText();
         
-        
-            try {
-                Class.forName(driver);
-                Connection kon = DriverManager.getConnection(db,user,pass);
-                Statement stt = kon.createStatement();
-                String SQL = "SELECT * from mahasiswa "
-                        + "WHERE nim LIKE '"+nim+"%';"   ;
-                ResultSet res = stt.executeQuery(SQL);
-                
-                int countRow = tabelModel.getRowCount();
-                for(int i = countRow - 1; i >= 0; i--){
-                    tabelModel.removeRow(i);
-                }
-                
-                while(res.next()){
-                data[0] = res.getString(1);
-                data[1] = res.getString(2);
-                data[2] = res.getString(3);
-                data[3] = res.getString(4);
-                data[4] = res.getString(5);
-                tabelModel.addRow(data);
-                }
-                
-                stt.close();
-                kon.close();
-            } catch (Exception ex) {
-                System.err.println(ex.getMessage());
-            }*/
     }//GEN-LAST:event_txtPencarianKeyTyped
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
@@ -619,6 +593,39 @@ public class frm_mhs extends javax.swing.JFrame {
         btnSimpan.setEnabled(true);
         aktif_text();
     }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void txtPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPencarianKeyReleased
+        // TODO add your handling code here:
+        String nim = txtPencarian.getText();
+
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+            Statement stt = kon.createStatement();
+            String SQL = "SELECT * from mahasiswa "
+                    + "WHERE nim LIKE '" + nim + "%';";
+            ResultSet res = stt.executeQuery(SQL);
+
+            int countRow = tabelModel.getRowCount();
+            for (int i = countRow - 1; i >= 0; i--) {
+                tabelModel.removeRow(i);
+            }
+
+            while (res.next()) {
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                data[2] = res.getString(3);
+                data[3] = formatDateTabel.format(res.getDate(4));
+                data[4] = res.getString(5);
+                tabelModel.addRow(data);
+            }
+
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_txtPencarianKeyReleased
 
     /**
      * @param args the command line arguments
