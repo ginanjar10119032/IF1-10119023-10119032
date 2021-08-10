@@ -1,6 +1,7 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Component;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -37,6 +38,8 @@ public class frm_nilaimhs extends javax.swing.JFrame {
     String driver, db, user, pass;
     String data[] = new String[15];
     int row = 0;
+
+    
 
     public frm_nilaimhs() {
         initComponents();

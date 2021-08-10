@@ -96,19 +96,18 @@ public class model {
         return new DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Nomor Meja", "Daftar Pesanan",
-                    "Jumlah", "Total Harga"
+                    "Nomor Meja", "Daftar Pesanan", "Total Harga"
                 }
         ) {
             boolean[] canEdit = new boolean[]{
-                false, false, false, false
+                false, false, false
             };
 
             @Override
             public boolean isCellEditable(int row, int column) {
                 return canEdit[column];
             }
-
+            
         };
     }
     
