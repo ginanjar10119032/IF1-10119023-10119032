@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 10, 2021 at 03:52 AM
+-- Generation Time: Aug 10, 2021 at 04:04 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -42,6 +42,22 @@ CREATE TABLE `list_makanan` (
   `nama_makanan` varchar(30) NOT NULL,
   `harga` int(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `list_makanan`
+--
+
+INSERT INTO `list_makanan` (`nama_makanan`, `harga`) VALUES
+('Ayam Bakar', 18000),
+('Caramel Macchiato', 25000),
+('Chocolate Hazelnut', 15000),
+('Chocolate Mint', 15000),
+('Lemon Tea', 17000),
+('Matcha', 20000),
+('Mie Goreng', 12000),
+('Nasi Goreng', 14000),
+('Rainbow', 12000),
+('Vanilla Latte', 12000);
 
 -- --------------------------------------------------------
 
