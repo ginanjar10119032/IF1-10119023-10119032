@@ -1,4 +1,6 @@
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,29 +13,29 @@ import javax.swing.table.DefaultTableModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Lenovo
  */
 public class frm_simulasiNA extends javax.swing.JFrame {
 
-     model model = new model();
+    model model = new model();
     private DefaultTableModel tabelModel = model.simulasiNA;
 
     koneksi setPanel;
     String driver, db, user, pass;
-    String data[] = new String[5];
+    String data[] = new String[18];
     int row = 0;
+
     /**
      * Creates new form frm_simulasiNA
      */
     public frm_simulasiNA() {
         initComponents();
         setLocationRelativeTo(null);
-        
+
         txtKodeMK.setEditable(false);
-        
+
         setPanel = new koneksi();
         driver = setPanel.settingPanel("DBDriver");
         db = setPanel.settingPanel("DBDatabase");
@@ -48,11 +50,50 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         btnHapus.setEnabled(false);
         btnSimpan.setEnabled(false);
     }
-    
+
     private void setColWidth() {
         tabelSimulasiNA.getRowHeight(2);
     }
-    
+
+    private void tampil_field() {
+        aktif_text();
+
+        row = tabelSimulasiNA.getSelectedRow();
+
+        String kodeMK;
+        kodeMK = tabelSimulasiNA.getValueAt(row, 0).toString();
+
+        txtKodeMK.setText(tabelSimulasiNA.getValueAt(row, 0).toString());
+        txtPersentaseAbsen.setText(tabelSimulasiNA.getValueAt(row, 1).toString());
+        txtPersentaseTugas.setText(tabelSimulasiNA.getValueAt(row, 2).toString());
+        txtPersentaseUTS.setText(tabelSimulasiNA.getValueAt(row, 3).toString());
+        txtPersentaseUAS.setText(tabelSimulasiNA.getValueAt(row, 4).toString());
+        txtKehadiran.setText(tabelSimulasiNA.getValueAt(row, 5).toString());
+        txtTugas1.setText(tabelSimulasiNA.getValueAt(row, 6).toString());
+        txtTugas2.setText(tabelSimulasiNA.getValueAt(row, 7).toString());
+        txtTugas3.setText(tabelSimulasiNA.getValueAt(row, 8).toString());
+        txtUTS.setText(tabelSimulasiNA.getValueAt(row, 9).toString());
+        txtUAS.setText(tabelSimulasiNA.getValueAt(row, 10).toString());
+
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(db, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nama_mk from mata_kuliah where nomor_mk = '" + kodeMK + "'";
+            ResultSet res = stt.executeQuery(SQL);
+            res.next();
+            txtNamaMK.setSelectedItem(res.getString(1));
+        } catch (Exception e) {
+        }
+
+        btnTambah.setEnabled(false);
+        btnSimpan.setEnabled(false);
+        btnUbah.setEnabled(true);
+        btnHapus.setEnabled(true);
+        btnBatal.setEnabled(true);
+    }
+
     private void isiBoxMK() {
         try {
             txtNamaMK.removeAllItems();
@@ -77,10 +118,14 @@ public class frm_simulasiNA extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-    
-    public void membersihkan_text() {
+
+    private void membersihkan_text() {
         txtNamaMK.setSelectedIndex(0);
         txtKodeMK.setText("");
+        txtPersentaseAbsen.setText("");
+        txtPersentaseTugas.setText("");
+        txtPersentaseUTS.setText("");
+        txtPersentaseUAS.setText("");
         txtKehadiran.setText("");
         txtTugas1.setText("");
         txtTugas2.setText("");
@@ -89,12 +134,13 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         txtUAS.setText("");
     }
 
-    public void nonaktif_text() {
+    private void nonaktif_text() {
         txtNamaMK.setEnabled(false);
+        txtKodeMK.setEnabled(false);
         txtPersentaseAbsen.setEnabled(false);
         txtPersentaseTugas.setEnabled(false);
         txtPersentaseUTS.setEnabled(false);
-        txtPersentaseUTS.setEnabled(false);
+        txtPersentaseUAS.setEnabled(false);
         txtKehadiran.setEnabled(false);
         txtTugas1.setEnabled(false);
         txtTugas2.setEnabled(false);
@@ -103,12 +149,13 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         txtUAS.setEnabled(false);
     }
 
-    public void aktif_text() {
+    private void aktif_text() {
         txtNamaMK.setEnabled(true);
+        txtKodeMK.setEnabled(true);
         txtPersentaseAbsen.setEnabled(true);
         txtPersentaseTugas.setEnabled(true);
         txtPersentaseUTS.setEnabled(true);
-        txtPersentaseUTS.setEnabled(true);
+        txtPersentaseUAS.setEnabled(true);
         txtKehadiran.setEnabled(true);
         txtTugas1.setEnabled(true);
         txtTugas2.setEnabled(true);
@@ -200,6 +247,11 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         jLabel2.setText("Nama Mata Kuliah");
 
         txtNamaMK.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtNamaMK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNamaMKActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel3.setText("Kode MK");
@@ -261,17 +313,47 @@ public class frm_simulasiNA extends javax.swing.JFrame {
             }
         ));
         tabelSimulasiNA.getTableHeader().setReorderingAllowed(false);
+        tabelSimulasiNA.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelSimulasiNAMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelSimulasiNA);
 
         btnTambah.setText("TAMBAH");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
 
         btnUbah.setText("UBAH");
+        btnUbah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUbahActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("HAPUS");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnSimpan.setText("SIMPAN");
+        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimpanActionPerformed(evt);
+            }
+        });
 
         btnBatal.setText("BATAL");
+        btnBatal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBatalActionPerformed(evt);
+            }
+        });
 
         btnKeluar.setText("KELUAR");
         btnKeluar.addActionListener(new java.awt.event.ActionListener() {
@@ -446,7 +528,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
@@ -459,12 +541,100 @@ public class frm_simulasiNA extends javax.swing.JFrame {
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:       
-       
+        tabelModel.removeRow(row);
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
-        
+        String data[] = new String[18];
+
+        char index;
+        String kelulusan;
+        Double persentaseTgs, persentaseAbsen, persentaseUts, persentaseUas;
+        Double absen, tgs1, tgs2, tgs3, uts, uas, nilaiAbsen, nilaiTgs, nilaiUts, nilaiUas, na;
+
+        if (txtKodeMK.getText().trim().equals("") || txtPersentaseAbsen.getText().trim().equals("")
+                || txtPersentaseTugas.getText().isEmpty() || txtPersentaseUTS.getText().trim().equals("")
+                || txtPersentaseUAS.getText().trim().equals("") || txtTugas1.getText().trim().equals("")
+                || txtTugas2.getText().trim().equals("") || txtTugas3.getText().trim().equals("")
+                || txtUTS.getText().trim().equals("") || txtUAS.getText().trim().equals("")) {
+
+        } else if (Double.valueOf(txtKehadiran.getText()) > 14) {
+            JOptionPane.showMessageDialog(null, "Kehadiram Maksimum adalah 14 Pertemuan", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+            txtKehadiran.requestFocus();
+        } else if (Double.valueOf(txtTugas1.getText()) > 100 || (Double.valueOf(txtTugas2.getText()) > 100)
+                || (Double.valueOf(txtTugas3.getText()) > 100) || (Double.valueOf(txtUTS.getText()) > 100)
+                || (Double.valueOf(txtUAS.getText()) > 100)) {
+            JOptionPane.showMessageDialog(null, "Nilai Maksimum adalah 100", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+        } else if ((Double.valueOf(txtTugas1.getText()) < 0) || (Double.valueOf(txtTugas2.getText()) < 0)
+                || (Double.valueOf(txtTugas3.getText()) < 0) || (Double.valueOf(txtUTS.getText()) < 0)
+                || (Double.valueOf(txtUAS.getText()) < 0) || (Double.valueOf(txtKehadiran.getText()) < 0)) {
+            JOptionPane.showMessageDialog(null, "Angka Minimum adalah 0", "Peringatan!", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            persentaseAbsen = Double.valueOf(txtPersentaseAbsen.getText());
+            persentaseTgs = Double.valueOf(txtPersentaseTugas.getText());
+            persentaseUts = Double.valueOf(txtPersentaseUTS.getText());
+            persentaseUas = Double.valueOf(txtPersentaseUAS.getText());
+            absen = Double.valueOf(txtKehadiran.getText());
+            tgs1 = Double.valueOf(txtTugas1.getText());
+            tgs2 = Double.valueOf(txtTugas2.getText());
+            tgs3 = Double.valueOf(txtTugas3.getText());
+            uts = Double.valueOf(txtUTS.getText());
+            uas = Double.valueOf(txtUAS.getText());
+
+            nilaiAbsen = ((absen / 14) * 100 * persentaseAbsen) / 100;
+            nilaiTgs = ((tgs1 + tgs2 + tgs3) / 3) * persentaseTgs / 100;
+            nilaiUts = uts * persentaseUts / 100;
+            nilaiUas = uas * persentaseUas / 100;
+            na = nilaiAbsen + nilaiTgs + nilaiUts + nilaiUas;
+
+            if (na >= 80) {
+                index = 'A';
+                kelulusan = "LULUS";
+            } else if (na >= 68) {
+                index = 'B';
+                kelulusan = "LULUS";
+            } else if (na >= 56) {
+                index = 'C';
+                kelulusan = "LULUS";
+            } else if (na >= 45) {
+                index = 'D';
+                kelulusan = "Tidak Lulus";
+            } else {
+                index = 'E';
+                kelulusan = "Tidak Lulus";
+            }
+
+            if (absen < 11) {
+                kelulusan = "Tidak Lulus";
+            }
+
+            data[0] = txtNamaMK.getSelectedItem().toString();
+            data[1] = String.valueOf(persentaseAbsen.intValue());
+            data[2] = String.valueOf(persentaseTgs.intValue());
+            data[3] = String.valueOf(persentaseUts.intValue());
+            data[4] = String.valueOf(persentaseUas.intValue());
+            data[5] = String.valueOf(absen.intValue());
+            data[6] = String.valueOf(tgs1.intValue());
+            data[7] = String.valueOf(tgs2.intValue());
+            data[8] = String.valueOf(tgs3.intValue());
+            data[9] = String.valueOf(uts.intValue());
+            data[10] = String.valueOf(uas.intValue());
+            data[11] = String.valueOf(nilaiAbsen.intValue());
+            data[12] = String.valueOf(nilaiTgs.intValue());
+            data[13] = String.valueOf(nilaiUts.intValue());
+            data[14] = String.valueOf(nilaiUas.intValue());
+            data[15] = String.valueOf(na.intValue());
+            data[16] = String.valueOf(index);
+            data[17] = kelulusan;
+
+            tabelModel.insertRow(0, data);
+            membersihkan_text();
+            btnSimpan.setEnabled(false);
+            btnTambah.setEnabled(true);
+            nonaktif_text();
+        }
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
@@ -476,6 +646,46 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         btnHapus.setEnabled(false);
         btnTambah.setEnabled(true);
     }//GEN-LAST:event_btnBatalActionPerformed
+
+    private void txtNamaMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaMKActionPerformed
+        // TODO add your handling code here:
+        txtNamaMK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if (!txtNamaMK.getSelectedItem().equals("----- Pilih Nama Mata Kuliah -----")) {
+                    try {
+                        Class.forName(driver);
+                        Connection kon = DriverManager.getConnection(db, user, pass);
+
+                        Statement stt = kon.createStatement();
+                        String SQL = "select nomor_mk from mata_kuliah where nama_mk='"
+                                + txtNamaMK.getSelectedItem() + "'";
+                        ResultSet res = stt.executeQuery(SQL);
+                        if (res.next()) {
+                            txtKodeMK.setText(res.getString(1));
+                        }
+
+                        res.close();
+                        stt.close();
+                        kon.close();
+                    } catch (Exception ex) {
+                        System.err.println(ex.getMessage());
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        System.exit(0);
+                    }
+                } else {
+                    txtKodeMK.setText("");
+                }
+            }
+        });
+    }//GEN-LAST:event_txtNamaMKActionPerformed
+
+    private void tabelSimulasiNAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelSimulasiNAMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 1) {
+            tampil_field();
+        }
+    }//GEN-LAST:event_tabelSimulasiNAMouseClicked
 
     /**
      * @param args the command line arguments
