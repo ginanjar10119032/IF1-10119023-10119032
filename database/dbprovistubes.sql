@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 08, 2021 at 09:11 PM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 8.0.8
+-- Generation Time: Aug 10, 2021 at 03:52 AM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,17 @@ SET time_zone = "+00:00";
 --
 -- Database: `dbprovistubes`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `history_transaksi`
+--
+
+CREATE TABLE `history_transaksi` (
+  `no` int(10) NOT NULL,
+  `pemasukan` int(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -84,7 +95,7 @@ CREATE TABLE `nilai_mhs` (
   `uts` int(3) DEFAULT NULL,
   `uas` int(3) DEFAULT NULL,
   `nilai_akhir` int(3) DEFAULT NULL,
-  `keterangan` enum('Lulus','Tidak Lulus') DEFAULT NULL
+  `keterangan` enum('LULUS','Tidak Lulus') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -113,14 +124,30 @@ INSERT INTO `pengguna` (`username`, `password`) VALUES
 
 CREATE TABLE `pesanan` (
   `no_meja` int(5) NOT NULL,
-  `daftar_pesanan` varchar(40) NOT NULL,
-  `jumlah` int(5) NOT NULL,
-  `total_harga` int(20) NOT NULL
+  `daftar_pesanan` varchar(30) NOT NULL,
+  `jumlah` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pesanan_total_harga`
+--
+
+CREATE TABLE `pesanan_total_harga` (
+  `no_meja` int(5) NOT NULL,
+  `total_harga` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `history_transaksi`
+--
+ALTER TABLE `history_transaksi`
+  ADD PRIMARY KEY (`no`);
 
 --
 -- Indexes for table `list_makanan`
@@ -144,6 +171,7 @@ ALTER TABLE `mata_kuliah`
 -- Indexes for table `nilai_mhs`
 --
 ALTER TABLE `nilai_mhs`
+  ADD PRIMARY KEY (`nim`,`nomor_mk`) USING BTREE,
   ADD KEY `nim` (`nim`),
   ADD KEY `nomor_mk` (`nomor_mk`);
 
@@ -151,7 +179,25 @@ ALTER TABLE `nilai_mhs`
 -- Indexes for table `pesanan`
 --
 ALTER TABLE `pesanan`
+  ADD PRIMARY KEY (`no_meja`,`daftar_pesanan`) USING BTREE,
+  ADD KEY `daftar_pesanan` (`daftar_pesanan`),
+  ADD KEY `no_meja` (`no_meja`);
+
+--
+-- Indexes for table `pesanan_total_harga`
+--
+ALTER TABLE `pesanan_total_harga`
   ADD PRIMARY KEY (`no_meja`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `history_transaksi`
+--
+ALTER TABLE `history_transaksi`
+  MODIFY `no` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -163,6 +209,13 @@ ALTER TABLE `pesanan`
 ALTER TABLE `nilai_mhs`
   ADD CONSTRAINT `nilai_mhs_ibfk_1` FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `nilai_mhs_ibfk_2` FOREIGN KEY (`nomor_mk`) REFERENCES `mata_kuliah` (`nomor_mk`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `pesanan`
+--
+ALTER TABLE `pesanan`
+  ADD CONSTRAINT `pesanan_ibfk_1` FOREIGN KEY (`no_meja`) REFERENCES `pesanan_total_harga` (`no_meja`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pesanan_ibfk_2` FOREIGN KEY (`daftar_pesanan`) REFERENCES `list_makanan` (`nama_makanan`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
