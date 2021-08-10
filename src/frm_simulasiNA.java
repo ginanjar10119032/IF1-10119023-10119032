@@ -42,7 +42,7 @@ public class frm_simulasiNA extends javax.swing.JFrame {
 
         tabelSimulasiNA.setModel(tabelModel);
         isiBoxMK();
-
+        nonaktif_text();
 
         btnUbah.setEnabled(false);
         btnHapus.setEnabled(false);
@@ -76,6 +76,45 @@ public class frm_simulasiNA extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
+    }
+    
+    public void membersihkan_text() {
+        txtNamaMK.setSelectedIndex(0);
+        txtKodeMK.setText("");
+        txtKehadiran.setText("");
+        txtTugas1.setText("");
+        txtTugas2.setText("");
+        txtTugas3.setText("");
+        txtUTS.setText("");
+        txtUAS.setText("");
+    }
+
+    public void nonaktif_text() {
+        txtNamaMK.setEnabled(false);
+        txtPersentaseAbsen.setEnabled(false);
+        txtPersentaseTugas.setEnabled(false);
+        txtPersentaseUTS.setEnabled(false);
+        txtPersentaseUTS.setEnabled(false);
+        txtKehadiran.setEnabled(false);
+        txtTugas1.setEnabled(false);
+        txtTugas2.setEnabled(false);
+        txtTugas3.setEnabled(false);
+        txtUTS.setEnabled(false);
+        txtUAS.setEnabled(false);
+    }
+
+    public void aktif_text() {
+        txtNamaMK.setEnabled(true);
+        txtPersentaseAbsen.setEnabled(true);
+        txtPersentaseTugas.setEnabled(true);
+        txtPersentaseUTS.setEnabled(true);
+        txtPersentaseUTS.setEnabled(true);
+        txtKehadiran.setEnabled(true);
+        txtTugas1.setEnabled(true);
+        txtTugas2.setEnabled(true);
+        txtTugas3.setEnabled(true);
+        txtUTS.setEnabled(true);
+        txtUAS.setEnabled(true);
     }
 
     /**
@@ -404,6 +443,39 @@ public class frm_simulasiNA extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnKeluarActionPerformed
+
+    private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnUbahActionPerformed
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        // TODO add your handling code here:
+        membersihkan_text();
+        btnTambah.setEnabled(false);
+        btnSimpan.setEnabled(true);
+        aktif_text();
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:       
+       
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
+        // TODO add your handling code here:
+        membersihkan_text();
+        nonaktif_text();
+        btnSimpan.setEnabled(false);
+        btnUbah.setEnabled(false);
+        btnHapus.setEnabled(false);
+        btnTambah.setEnabled(true);
+    }//GEN-LAST:event_btnBatalActionPerformed
 
     /**
      * @param args the command line arguments
